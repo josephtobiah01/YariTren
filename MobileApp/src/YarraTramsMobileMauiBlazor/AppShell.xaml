@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Shell 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:YarraTramsMobileMauiBlazor.Views.Login"
+    xmlns:webview="clr-namespace:YarraTramsMobileMauiBlazor.Views.WebView"
+    xmlns:yoursay="clr-namespace:YarraTramsMobileMauiBlazor.Views.YourSay"
+    xmlns:roster="clr-namespace:YarraTramsMobileMauiBlazor.Views.Roster"
+    xmlns:viewmodel="clr-namespace:YarraTramsMobileMauiBlazor.ViewModels.AppShell"
+    xmlns:fontAwesome="clr-namespace:FontAwesome"
+    xmlns:controls="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:flyoutcontent="clr-namespace:YarraTramsMobileMauiBlazor.Views.Flyout"
+    xmlns:popup="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+    xmlns:overlay="clr-namespace:YarraTramsMobileMauiBlazor.CustomControls"
+    x:DataType="viewmodel:AppShellViewModel"
+    x:Class="YarraTramsMobileMauiBlazor.AppShell"
+    FlyoutWidth="300"
+    Shell.ForegroundColor="{AppThemeBinding Light=white, Dark=white}"
+    Shell.BackgroundColor="{AppThemeBinding Light=gray, Dark=gray}"
+    FlyoutBackgroundColor="{AppThemeBinding Dark=white, Light=White}"
+    >
+
+
+
+    <Shell.BindingContext>
+        <viewmodel:AppShellViewModel/>
+    </Shell.BindingContext>
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style x:Key="BaseStyle" TargetType="Element">
+                <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Dark=black, Light=Black}" />
+                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
+                <Setter Property="Shell.UnselectedColor" Value="{AppThemeBinding Dark=#95FFFFFF, Light=#95000000}" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource Primary}, Light=White}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Dark=Black, Light=Black}" />
+                <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Dark=#95FFFFFF, Light=#95000000}" />
+                <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Dark=White, Light=Black}"/>
+                <Setter Property="Shell.FlyoutBackgroundColor" Value="{AppThemeBinding Dark=White, Light=White}"/>
+
+            </Style>
+            <Style BasedOn="{StaticResource BaseStyle}" TargetType="TabBar" />
+            <Style BasedOn="{StaticResource BaseStyle}" TargetType="FlyoutItem" />
+
+            <Style Class="FlyoutItemLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="White" />
+            </Style>
+            <Style
+            ApplyToDerivedTypes="True"
+            Class="FlyoutItemLayoutStyle"
+            TargetType="Layout">
+                <Setter Property="BackgroundColor" Value="LightBlue" />
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="Black" />
+                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="White" />
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+
+            <Style
+            ApplyToDerivedTypes="True"
+            Class="MenuItemLayoutStyle"
+            TargetType="Layout">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="Black" />
+                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="White" />
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <Shell.FlyoutHeader>
+        <ContentView > 
+            <VerticalStackLayout
+                HeightRequest="150"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                Margin="0"
+                Padding="0">
+
+                <Label
+                    Text="{Binding FirstName}"
+                    Style="{StaticResource LabelLarge1}"
+                    FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"
+                    TextColor="Black"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalTextAlignment="Start"
+                    Margin="5"/>
+
+                <Label
+                    Text="{Binding LastName}"
+                    Style="{StaticResource LabelMedium}"
+                    FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"
+                    TextColor="Black"
+                    HorizontalTextAlignment="Start"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"/>
+
+                <Grid
+                    ColumnDefinitions="2.5*,1.5*"
+                    ColumnSpacing="10"
+                    Padding="0"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    Margin="8,12">
+
+                    <Button
+                        Text="Change Password"
+                        FontFamily="{OnPlatform Android=Montserrat-Bold, iOS=Montserrat-Bold}"
+                        FontSize="14"
+                        CornerRadius="10"
+                        BackgroundColor="White"
+                        TextColor="{StaticResource Primary}"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="CenterAndExpand"
+                        BorderColor="{StaticResource Primary}"
+                        BorderWidth="1"
+                        Command="{Binding ChangePassword}"/>
+
+                    <Button
+                        Grid.Column="1"
+                        Text="Sign Out"
+                        CornerRadius="10"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="CenterAndExpand"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"
+                        FontFamily="{OnPlatform Android=Montserrat-Bold, iOS=Montserrat-Bold}"
+                        FontSize="14"
+                        Command="{Binding SignOut}"/>
+
+                </Grid>
+
+                <BoxView
+                    Margin="0,20,0,0"
+                    HeightRequest="1"
+                    Color="#D0D0CE">
+
+                </BoxView>
+
+
+
+            </VerticalStackLayout>
+        </ContentView>
+    </Shell.FlyoutHeader>
+
+    <Shell.FlyoutContent>
+        <ScrollView>
+            <VerticalStackLayout>
+                <flyoutcontent:FlyoutContentPage
+                BackgroundColor="Transparent"
+                Margin="5,0"
+                VerticalOptions="StartAndExpand"
+                HorizontalOptions="FillAndExpand"
+                HeightRequest="500"
+                IsVisible="True"
+                />
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Shell.FlyoutContent>
+
+    <ShellContent 
+        ContentTemplate="{DataTemplate webview:WebViewPage}" 
+        Route="WebViewPage"/>
+
+    <ShellContent 
+        ContentTemplate="{DataTemplate roster:RosterViewPage}" 
+        Route="RosterViewPage"/>
+
+    <ShellContent 
+        ContentTemplate="{DataTemplate yoursay:YourSayViewPage}" 
+        Route="YourSayViewPage"/>
+
+    <ShellContent 
+        ContentTemplate="{DataTemplate yoursay:YourSayFormViewPage}" 
+        Route="YourSayFormViewPage"/>
+
+    <ShellContent 
+        ContentTemplate="{DataTemplate yoursay:ConfirmationViewPage}" 
+        Route="ConfirmationViewPage"/>
+
+
+    
+
+
+    <Shell.FlyoutFooter>
+        <ContentView HeightRequest="100" 
+                     VerticalOptions="Start"
+                     Margin="0">
+
+            <VerticalStackLayout Grid.Row="3" Margin="0,0,0,0" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" >
+                
+                <BoxView
+                     Margin="0,10,0,0"
+                     HeightRequest="1"
+                     Color="#D0D0CE">
+
+                </BoxView>
+
+                <Grid
+                    ColumnDefinitions="1.5*,1.5*,4*"
+                    Margin="0,15,0,15">
+                    <Image
+                        Source="help"
+                        WidthRequest="20"
+                        HeightRequest="20"
+                        VerticalOptions="Center" 
+                        HorizontalOptions="Center"/>
+
+                    <Label 
+                        Grid.Column="1"
+                        Text="Help"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        TextColor="Black"
+                        FontSize="16"
+                        Margin="5,0,0,0"
+                        FontFamily="Montserrat-Medium"/>
+
+                    <Image 
+                        Grid.Column="2"
+                        Source="arrowblue"
+                        WidthRequest="30"
+                        HeightRequest="30"
+                        VerticalOptions="Center" 
+                        HorizontalOptions="EndAndExpand"
+                        Margin="0,0,10,0"/>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Help}"/>
+                    </Grid.GestureRecognizers>
+                </Grid>
+
+                <Label 
+                    Text="{Binding VersionText}"
+                    VerticalOptions="Start"
+                    HorizontalOptions="Start"
+                    TextColor="LightGray"
+                    FontSize="14"
+                    Margin="15,0,0,0"
+                    FontFamily="Montserrat-Medium"/>
+
+            </VerticalStackLayout>
+        </ContentView>
+    </Shell.FlyoutFooter>
+</Shell>

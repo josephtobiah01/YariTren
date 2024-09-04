@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="YarraTramsMobileMauiBlazor.Resources.Styles.YarraTramsMobileStyles">
+
+    <Color x:Key="Primary">#2196F3</Color>
+    <Color x:Key="TextColor">#000000</Color>
+    <Color x:Key="TextColorDark">White</Color>
+
+    <Color x:Key="DarkMode">White</Color>
+    <Color x:Key="LightMode">White</Color>
+
+    <Color x:Key="WindowBackgroundColor">#f2f2f7</Color>
+    <Color x:Key="WindowBackgroundColorDark">Black</Color>
+
+    <Color x:Key="CardBackground">White</Color>
+    <Color x:Key="CardBackgroundDark">#1C1C1E</Color>
+
+    <Color x:Key="SystemBlue">#007AFF</Color>
+    <Color x:Key="SystemGreen">#34C759</Color>
+    <Color x:Key="SystemIndigo">#5856D6</Color>
+    <Color x:Key="SystemIndigo1">#4B0082</Color>
+    <Color x:Key="SystemOrange">#FF9500</Color>
+    <Color x:Key="SystemPink">#FF2D55</Color>
+    <Color x:Key="SystemPurple">#AF52DE</Color>
+    <Color x:Key="SystemRed">#FF3B30</Color>
+    <Color x:Key="SystemTeal">#5AC8FA</Color>
+    <Color x:Key="SystemYellow">#FFCC00</Color>
+
+    <Color x:Key="SystemGray">#8E8E93</Color>
+    <Color x:Key="SystemGray2">#AEAEB2</Color>
+    <Color x:Key="SystemGray3">#C7C7CC</Color>
+    <Color x:Key="SystemGray4">#D1D1D6</Color>
+    <Color x:Key="SystemGray5">#E5E5EA</Color>
+    <Color x:Key="SystemGray6">#F2F2F7</Color>
+
+    <Color x:Key="SystemBlueDark">#0A84FF</Color>
+    <Color x:Key="SystemGreenDark">#30D158</Color>
+    <Color x:Key="SystemIndigoDark">#5E5CE6</Color>
+    <Color x:Key="SystemOrangeDark">#FF9F0A</Color>
+    <Color x:Key="SystemPinkDark">#FF375F</Color>
+    <Color x:Key="SystemPurpleDark">#BF5AF2</Color>
+    <Color x:Key="SystemRedDark">#FF453A</Color>
+    <Color x:Key="SystemTealDark">#64D2FF</Color>
+    <Color x:Key="SystemYellowDark">#FFD60A</Color>
+
+    <Color x:Key="SystemGrayDark">#8E8E93</Color>
+    <Color x:Key="SystemGray2Dark">#636366</Color>
+    <Color x:Key="SystemGray3Dark">#484848</Color>
+    <Color x:Key="SystemGray4Dark">#3A3A3C</Color>
+    <Color x:Key="SystemGray5Dark">#2C2C2E</Color>
+    <Color x:Key="SystemGray6Dark">#1C1C1E</Color>
+
+    <Color x:Key="GlobalBlue">#007AFF</Color>
+    <Color x:Key="GlobalDarkBlue">#004FA5</Color>
+    <Color x:Key="GlobalExtraLightGrey">#FAFAFA</Color>
+    <Color x:Key="GlobalLightGrey">#EEEEEE</Color>
+    <Color x:Key="GlobalLightTextGrey">#B7B7B7</Color>
+    <Color x:Key="GlobalGrey">#5E6A75</Color>
+    <Color x:Key="GlobalDarkGrey">#4A4A4A</Color>
+
+    <Color x:Key="SelectionHighlight">#E8EEF2</Color>
+    <Color x:Key="GumballGreen">#3ECF8E</Color>
+    <Color x:Key="GumballOrange">#FF9801</Color>
+    <Color x:Key="GumballRed">#FF2C55</Color>
+    <Color x:Key="GumballGrey">#727D87</Color>
+
+    <Color x:Key="AccentColor">#FFBF00</Color>
+    <Color x:Key="DisabledColor">#E6DAB9</Color>
+    <Color x:Key="TitleTextColor">#CC9900</Color>
+    <Color x:Key="PaleBackColorPrimary">#F2EFE6</Color>
+    <Color x:Key="PaleBackColorSecondary">#F2EDDA</Color>
+    <Color x:Key="DeepTextColor">#555555</Color>
+    <Color x:Key="NormalTextColor">#666666</Color>
+    <Color x:Key="PaleTextColor">#999999</Color>
+
+    <Style x:Key="BaseLabel" TargetType="Label">
+        <Setter Property="TextColor" 
+            Value="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColor}}" />
+    </Style>
+
+    <Style x:Key="LabelMicro" TargetType="Label" BasedOn="{StaticResource BaseLabel}">
+        <Setter Property="FontSize" Value="10"/>
+    </Style>
+    <Style x:Key="LabelSmall" TargetType="Label" BasedOn="{StaticResource BaseLabel}">
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <Style x:Key="LabelMedium" TargetType="Label" BasedOn="{StaticResource BaseLabel}">
+        <Setter Property="FontSize" Value="15"/>
+    </Style>
+
+    <Style x:Key="LabelLarge" TargetType="Label" BasedOn="{StaticResource BaseLabel}">
+        <Setter Property="FontSize" Value="18"/>
+    </Style>
+
+    <Style x:Key="LabelLarge1" TargetType="Label" BasedOn="{StaticResource BaseLabel}">
+        <Setter Property="FontSize" Value="21"/>
+    </Style>
+
+    <Style x:Key="LabelLarge2" TargetType="Label" BasedOn="{StaticResource BaseLabel}">
+        <Setter Property="FontSize" Value="24"/>
+    </Style>
+
+    <Style x:Key="LabelLarge3" TargetType="Label" BasedOn="{StaticResource BaseLabel}">
+        <Setter Property="FontSize" Value="27"/>
+    </Style>
+
+
+
+    <Style x:Key="MontserratBold" TargetType="Label" >
+        <Setter Property="FontFamily" Value="Montserrat-Bold" />
+    </Style>
+
+    <Style x:Key="MontserratSemiBold" TargetType="Label" >
+        <Setter Property="FontFamily" Value="Montserrat-SemiBold" />
+    </Style>
+    <Style x:Key="MontserratMedium" TargetType="Label" >
+        <Setter Property="FontFamily" Value="Montserrat-Medium" />
+    </Style>
+    <Style x:Key="MontserratRegular" TargetType="Label" >
+        <Setter Property="FontFamily" Value="Montserrat-Regular" />
+    </Style>
+    <Style x:Key="MontserratLight" TargetType="Label" >
+        <Setter Property="FontFamily" Value="Montserrat-Light" />
+    </Style>
+    <Style x:Key="MontserratExtraLight" TargetType="Label" >
+        <Setter Property="FontFamily" Value="Montserrat-ExtraLight" />
+    </Style>
+
+
+    <!--<x:Double x:Key="BaseFontSize">12</x:Double>
+    <x:Double x:Key="BaseFontSize+">14</x:Double>
+    <x:Double x:Key="BaseFontSize++">17</x:Double>
+    <x:Double x:Key="BaseFontSize-">11</x:Double>-->
+
+    <!--<Style TargetType="sv:SettingsView">
+        <Setter Property="SeparatorColor" Value="{StaticResource DisabledColor}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource PaleBackColorPrimary}" />
+        <Setter Property="HeaderBackgroundColor" Value="{StaticResource PaleBackColorPrimary}" />
+        <Setter Property="CellBackgroundColor" Value="{StaticResource GlobalLightGrey}" />
+        <Setter Property="CellTitleColor" Value="{StaticResource DeepTextColor}" />
+        <Setter Property="CellValueTextColor" Value="{StaticResource NormalTextColor}" />
+        <Setter Property="CellTitleFontSize" Value="{StaticResource BaseFontSize++}" />
+        <Setter Property="CellValueTextFontSize" Value="{StaticResource BaseFontSize}" />
+        <Setter Property="CellDescriptionColor" Value="{StaticResource NormalTextColor}" />
+        <Setter Property="CellDescriptionFontSize" Value="{StaticResource BaseFontSize-}" />
+        <Setter Property="CellAccentColor" Value="{StaticResource AccentColor}" />
+        <Setter Property="SelectedColor" Value="#50FFBF00" />
+        <Setter Property="HeaderTextColor" Value="{StaticResource TitleTextColor}" />
+        <Setter Property="FooterFontSize" Value="{StaticResource BaseFontSize-}" />
+        <Setter Property="FooterTextColor" Value="{StaticResource PaleTextColor}" />
+    </Style>-->
+
+    <!--<Style TargetType="NavigationPage">
+        <Setter Property="BarBackgroundColor" Value="#696158"/>
+        <Setter Property="BarTextColor" Value="White"/>
+    </Style>-->
+
+    
+
+    <!--<OnIdiom 
+        x:Key="ToolbarSize" 
+        x:TypeArguments="GridLength"
+        Phone="50"
+        Tablet="100"/>
+    <OnIdiom 
+        x:Key="ToolbarSpacerSize" 
+        x:TypeArguments="x:Double"
+        Phone="50"
+        Tablet="100"/>-->
+    
+    <!--<converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />-->
+
+</ResourceDictionary>

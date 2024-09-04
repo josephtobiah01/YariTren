@@ -1,0 +1,102 @@
+trigger:
+  - develop
+pool:
+  vmImage: windows-2019
+variables:
+  - group: android-signing
+  - name: apkNameWithoutFileExt
+    value: au.com.yarratrams.employeeapp
+  - name: AndroidManifestPath
+    value: MobileApp/src/YarraTramsMobile.Android/Properties/AndroidManifest.xml
+  - name: Version.MajorMinor
+    value: 1.44
+  - name: Version.Revision
+    value: '$[counter(variables[''Version.MajorMinor''], 0)]'
+stages:
+  - stage: BuildDevelop
+    displayName: 'Dev Build'
+    variables:
+      - name: buildConfiguration
+        value: Debug
+      - name: outputDirectory
+        value: $(build.binariesDirectory)/$(buildConfiguration)
+      - name: appVersion
+        value: 1.44.2.33
+    jobs:
+      - job: Build
+        steps:
+          - task: DotNetCoreCLI@2
+            displayName: 'Restore Packages: dotnet restore'
+            inputs:
+              command: restore
+              projects: '**/YarraTramsMobile.sln'
+            enabled: false
+          - task: VSBuild@1
+            displayName: Restore Packages - msbuild
+            inputs:
+              solution: '**/YarraTramsMobile.sln'
+              configuration: $(BuildConfiguration)
+              vsVersion: '16.0'
+              msbuildArgs: '/t:Restore'
+          - task: DotNetCoreCLI@2
+            displayName: Build Unit Test Project
+            inputs:
+              command: build
+              projects: '**/YarraTramsMobile.UnitTests.csproj'
+          - task: VSTest@2
+            displayName: Run Unit Tests
+            inputs:
+              testAssemblyVer2: |
+                  **\$(BuildConfiguration)\**\YarraTramsMobile.UnitTests.dll
+                  !**\obj\**
+              testFiltercriteria: TestCategory!=Integration
+              platform: $(BuildPlatform)
+              configuration: $(BuildConfiguration)
+              vsTestVersion: '16.0'
+          - task: android-manifest-version@1
+            displayName: Update Android Version Number
+            inputs:
+              sourcePath: $(AndroidManifestPath)
+              versionCodeOption: buildid
+              versionCode: $(Build.BuildId)
+              versionName: $(Version.MajorMinor).$(Version.Revision)
+              printFile: true
+
+          - task: DownloadSecureFile@1
+            name: keyStore
+            displayName: "Download keystore from secure files"
+            inputs:
+              secureFile: 'mrstrong.keystore'
+
+          - task: ProvisionDotfuscatorCE@1
+            inputs:
+              dotfuscatorSN: '275777-391'
+              dotfuscatorDistro: '16'
+
+          - template: templates/build-android.yaml
+            parameters:
+              buildConfig: ${{ variables.buildConfiguration }}
+              version: ${{ variables.appVersion }}
+              apkNameWithoutFileExt: ${{ variables.apkNameWithoutFileExt }}
+              outputDirectory: $(outputDirectory)
+
+          - template: templates/build-android.yaml
+            parameters:
+              buildConfig: 'Staging'
+              version: $(appVersion)
+              apkNameWithoutFileExt: $(apkNameWithoutFileExt)
+              outputDirectory: '$(build.binariesDirectory)/Staging'
+
+          - template: templates/build-android.yaml
+            parameters:
+              buildConfig: 'Prod'
+              version: $(appVersion)
+              apkNameWithoutFileExt: $(apkNameWithoutFileExt)
+              outputDirectory: '$(build.binariesDirectory)/Prod'
+
+          - task: PublishBuildArtifacts@1
+            displayName: Publish Build Artifacts
+            condition: succeeded()
+            inputs:
+              pathToPublish: $(Build.ArtifactStagingDirectory)
+              artifactName: Android

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dx:DXPopup 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dx="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
+    x:Class="YarraTramsMobileMauiBlazor.Views.Roster.RosterDetailsPopupPage"
+    xmlns:vm="clr-namespace:YarraTramsMobileMauiBlazor.ViewModels.Roster"
+    x:DataType="vm:RosterDetailsPopupPageViewModel"
+    IsOpen="{Binding IsPopupOpen}"
+    AllowAnimation="True"
+    AllowScrim="True"
+    AnimationDuration="250"
+    x:Name="dxPopup">
+    
+    <Frame 
+        CornerRadius="5" 
+        Margin="20,20,20,20" 
+        HeightRequest="250" 
+        WidthRequest="290" 
+        VerticalOptions="CenterAndExpand" 
+        HorizontalOptions="Center" 
+        BackgroundColor="White">
+
+        <Frame.GestureRecognizers>
+            <SwipeGestureRecognizer Direction="Left" Swiped="{Binding Swiped}"/>
+            <SwipeGestureRecognizer Direction="Right" Swiped="{Binding Swiped}"/>
+        </Frame.GestureRecognizers>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="1.5*" />
+                <RowDefinition Height="1.5*" />
+                <RowDefinition Height=".5*" />
+                <RowDefinition Height="1.5*" />
+                <RowDefinition Height="1.5*" />
+                <RowDefinition Height="1.5*" />
+            </Grid.RowDefinitions>
+
+            <StackLayout Grid.Row="0" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" >
+                <Label x:Name="PopupTitle" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Center" Style="{StaticResource MontserratMedium}" />
+            </StackLayout>
+
+            <StackLayout Grid.Row="1" Orientation="Horizontal">
+                <Label Text="{Binding DutyID}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" Style="{StaticResource MontserratMedium}" />
+                <Label Text="{Binding DutyType}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Center" Style="{StaticResource MontserratRegular}" />
+                <Label Text="{Binding LocationStart}" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Center" Style="{StaticResource MontserratRegular}" />
+            </StackLayout>
+
+            <Grid Grid.Row="2">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="25*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Text="Start" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" Style="{StaticResource MontserratRegular}" />
+                <Label Grid.Column="1" Text="{Binding StartTime}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" Style="{StaticResource MontserratMedium}" />
+                <Label Grid.Column="2" Text="End" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" Style="{StaticResource MontserratRegular}" HorizontalTextAlignment="Center" />
+                <Label Grid.Column="3" Text="{Binding EndTime}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" Style="{StaticResource MontserratMedium}" />
+            </Grid>
+
+            <BoxView Grid.Row="3" VerticalOptions="CenterAndExpand" HorizontalOptions="Fill" HeightRequest="1" Color="#EDEDED" />
+
+            <Grid  Grid.Row="4">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="25*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Text="Meal" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" Style="{StaticResource MontserratMedium}" />
+                <Label Grid.Column="1" Text="{Binding MealLocation}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" Style="{StaticResource MontserratRegular}" />
+                <Label Grid.Column="2" Text="{Binding MealStart}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" Style="{StaticResource MontserratRegular}" />
+                <Label Grid.Column="3" Text="{Binding MealEnd}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" Style="{StaticResource MontserratRegular}" />
+            </Grid>
+
+            <Grid  Grid.Row="5">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="25*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Text="Work" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" Style="{StaticResource MontserratMedium}" />
+                <Label  Grid.Column="2" Text="{Binding WorkingDuration}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black"  HorizontalTextAlignment="Start" Style="{StaticResource MontserratRegular}" />
+            </Grid>
+
+            <Grid  Grid.Row="6">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="25*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Text="Spread" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" Style="{StaticResource MontserratMedium}" />
+                <Label Grid.Column="2" Text="{Binding SplitDuration}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" Style="{StaticResource MontserratRegular}" />
+            </Grid>
+        </Grid>
+    </Frame>
+</dx:DXPopup>

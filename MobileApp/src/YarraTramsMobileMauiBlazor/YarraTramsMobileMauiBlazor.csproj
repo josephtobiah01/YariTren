@@ -1,0 +1,294 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+
+
+  <PropertyGroup>
+		<TargetFrameworks>net8.0-android;net8.0-ios</TargetFrameworks>
+        <OutputType>Exe</OutputType>
+        <RootNamespace>YarraTramsMobileMauiBlazor</RootNamespace>
+        <UseMaui>true</UseMaui>
+        <SingleProject>true</SingleProject>
+        <ImplicitUsings>enable</ImplicitUsings>
+      <Nullable>enable</Nullable>
+      
+        <!-- Display name -->
+        <ApplicationTitle>Ding!</ApplicationTitle>
+
+        <!-- App Identifier -->
+        <ApplicationId Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">au.com.yarratrams.dingyarratrams</ApplicationId>
+        <ApplicationId Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">au.com.yarratrams.employeeapp</ApplicationId>
+
+        <!-- Versions (Can be overwritten in specific platform/OS configurations -->
+        <ApplicationDisplayVersion>2.0.0</ApplicationDisplayVersion>
+        <ApplicationVersion>39</ApplicationVersion>
+
+		  <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
+      <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">29.0</SupportedOSPlatformVersion>
+      <Configurations>Debug;Release;Staging</Configurations>
+
+    </PropertyGroup>
+
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+    <!--Android-->
+    <AndroidKeyStore>True</AndroidKeyStore>
+    <AndroidSigningKeyStore>key.keystore</AndroidSigningKeyStore>
+    <AndroidSigningKeyAlias>YarraTramsMobileAlias</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>Password123</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>Password123</AndroidSigningStorePass>    
+  </PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+		<DebugType>portable</DebugType>
+		<Optimize>false</Optimize>
+		<OutputPath>bin\Debug</OutputPath>
+		<EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Staging|AnyCPU' ">
+		<DefineConstants>STAGING;TRACE</DefineConstants>
+		<DebugType>portable</DebugType>
+		<Optimize>true</Optimize>
+		<OutputPath>bin\Staging</OutputPath>
+		<EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+	</PropertyGroup>
+
+
+	<PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios'">
+	  <ProvisioningType>manual</ProvisioningType>
+    <ArchiveOnBuild>true</ArchiveOnBuild>
+    <RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
+	</PropertyGroup>
+
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|net8.0-ios'">
+  	  <CodesignKey>Apple Development: Peter Strong (H4F2X2U2V8)</CodesignKey>
+ 	    <CodesignProvision>YT - DingYarraTrams - Development2024</CodesignProvision>
+	</PropertyGroup>
+		
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Staging|net8.0-ios'">
+	  <MtouchProfiling>False</MtouchProfiling>
+	  <CodesignKey>Apple Distribution: Yarra Trams (A36DVC6PCV)</CodesignKey>
+	  <CodesignProvision>YT - DingYarraTrams - Distribution2024</CodesignProvision>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Release|net8.0-ios'">
+	  <MtouchProfiling>False</MtouchProfiling>
+	  <CodesignKey>Apple Distribution: Yarra Trams (A36DVC6PCV)</CodesignKey>
+	  <CodesignProvision>YT - DingYarraTrams - Distribution2024</CodesignProvision>
+	</PropertyGroup>
+
+
+
+  <ItemGroup>
+        <!-- App Icon -->
+      <MauiIcon Include="Resources\AppIcon\dingicon512x.svg" TintColor="#89c689" Color="#e8f1f1" ForegroundScale="0.35" BaseSize="848,848" />
+        <!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\Images\loginding.png" TintColor="#89c689" Color="#e8f1f1" />
+
+        <!-- Images -->
+        <MauiImage Include="Resources\Images\*" />
+
+        <!-- Custom Fonts -->
+        <MauiFont Include="Resources\Fonts\*" />
+
+        <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+    
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Interfaces\IRosterProvider.cs" />
+      <Compile Remove="Services\RosterProvider.cs" />
+      <Compile Remove="Services\SQLiteFactory.cs" />
+      <Compile Remove="ViewModels\Roster\RosterDetailsPopupPageViewModel.cs" />
+      <Compile Remove="ViewModels\Roster\RosterSimplePopupViewModel.cs" />
+      <Compile Remove="Views\Roster\RosterDetailsPopupPage.xaml.cs" />
+      <Compile Remove="Views\Roster\RosterSimplePopup.xaml.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiXaml Remove="Views\Roster\RosterDetailsPopupPage.xaml" />
+      <MauiXaml Remove="Views\Roster\RosterSimplePopup.xaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\Fonts\fabrands.ttf" />
+      <None Remove="Resources\Fonts\faregular.ttf" />
+      <None Remove="Resources\Fonts\fasolid.ttf" />
+      <None Remove="Resources\Fonts\HelveticaNeue-CondensedBold.ttf" />
+      <None Remove="Resources\Fonts\HelveticaNeue-Italic.ttf" />
+      <None Remove="Resources\Fonts\HelveticaNeue-Regular.otf" />
+      <None Remove="Resources\Fonts\HelveticaNeue67-MediumCondensed.otf" />
+      <None Remove="Resources\Fonts\HelveticaNeue67-MediumCondensedOblique.otf" />
+      <None Remove="Resources\Fonts\HelveticaNeue97-BlackCondensed.otf" />
+      <None Remove="Resources\Fonts\HelveticaNeue97-BlackCondensedOblique.otf" />
+      <None Remove="Resources\Fonts\Montserrat-Bold.ttf" />
+      <None Remove="Resources\Fonts\Montserrat-ExtraBold.ttf" />
+      <None Remove="Resources\Fonts\Montserrat-Light.ttf" />
+      <None Remove="Resources\Fonts\Montserrat-Medium.ttf" />
+      <None Remove="Resources\Fonts\Montserrat-Regular.ttf" />
+      <None Remove="Resources\Fonts\Montserrat-SemiBold.ttf" />
+      <None Remove="Resources\Fonts\Roboto-Black.ttf" />
+      <None Remove="Resources\Fonts\Roboto-BlackItalic.ttf" />
+      <None Remove="Resources\Fonts\Roboto-Bold.ttf" />
+      <None Remove="Resources\Fonts\Roboto-BoldItalic.ttf" />
+      <None Remove="Resources\Fonts\Roboto-Italic.ttf" />
+      <None Remove="Resources\Fonts\Roboto-Light.ttf" />
+      <None Remove="Resources\Fonts\Roboto-LightItalic.ttf" />
+      <None Remove="Resources\Fonts\Roboto-Medium.ttf" />
+      <None Remove="Resources\Fonts\Roboto-MediumItalic.ttf" />
+      <None Remove="Resources\Fonts\Roboto-Regular.ttf" />
+      <None Remove="Resources\Fonts\Roboto-Thin.ttf" />
+      <None Remove="Resources\Fonts\Roboto-ThinItalic.ttf" />
+      <None Remove="Resources\Images\andtogglemonthly.png" />
+      <None Remove="Resources\Images\andtoggleweekly.png" />
+      <None Remove="Resources\Images\arrowactiveleft.png" />
+      <None Remove="Resources\Images\arrowactiveright.png" />
+      <None Remove="Resources\Images\arrowblue.png" />
+      <None Remove="Resources\Images\arrowcirclegn.png" />
+      <None Remove="Resources\Images\arrowdownweekly.png" />
+      <None Remove="Resources\Images\arrowinactiveleft.png" />
+      <None Remove="Resources\Images\arrowinactiveright.png" />
+      <None Remove="Resources\Images\arrowupsepweekly.png" />
+      <None Remove="Resources\Images\arrowupweeklygn.png" />
+      <None Remove="Resources\Images\back_arrow.png" />
+      <None Remove="Resources\Images\bluebackground.png" />
+      <None Remove="Resources\Images\cross_circle.png" />
+      <None Remove="Resources\Images\currentdayweekly.png" />
+      <None Remove="Resources\Images\dingicon.png" />
+      <None Remove="Resources\Images\dinglogo.png" />
+      <None Remove="Resources\Images\flyoutbar.png" />
+      <None Remove="Resources\Images\flyouticon.svg" />
+      <None Remove="Resources\Images\futuredayweekly.png" />
+      <None Remove="Resources\Images\greenbackground.png" />
+      <None Remove="Resources\Images\hamburger.png" />
+      <None Remove="Resources\Images\help.png" />
+      <None Remove="Resources\Images\kdlogo_login.png" />
+      <None Remove="Resources\Images\kdyttopbarlogo.png" />
+      <None Remove="Resources\Images\pinlock.png" />
+      <None Remove="Resources\Images\tick_circle.png" />
+      <None Remove="Resources\Images\yoursaycompliment.png" />
+      <None Remove="Resources\Images\yoursayfeedback.png" />
+      <None Remove="Resources\Images\yoursaysafety.png" />
+      <None Remove="Resources\Images\yoursaysuggestion.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Maui" Version="9.0.1" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+        <PackageReference Include="DevExpress.Maui.Core" Version="24.1.3" />	
+        <PackageReference Include="DevExpress.Maui.Controls" Version="24.1.3" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />      
+	    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+        <PackageReference Include="MonkeyCache" Version="2.1.2-beta" />
+        <PackageReference Include="MonkeyCache.FileStore" Version="2.1.2-beta" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Microsoft.Azure.NotificationHubs" Version="4.2.0" />
+    </ItemGroup>
+
+	<!--<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
+		<PackageReference Include="Xamarin.AndroidX.Core" Version="1.12.0.3" />
+		<PackageReference Include="Xamarin.AndroidX.Collection" Version="1.3.0.2" />
+		<PackageReference Include="Xamarin.AndroidX.Collection.Ktx" Version="1.3.0.2" />
+		<PackageReference Include="Xamarin.AndroidX.Activity.Ktx" Version="1.8.1.1" />
+		<PackageReference Include="Xamarin.AndroidX.Preference" Version="1.2.1.2" />
+		<GoogleServicesJson Include="Platforms\Android\google-services.json" Link="Platforms\Android\google-services.json" />
+		<PackageReference Include="Xamarin.Google.Android.Material">
+			<Version>1.10.0.2</Version>
+		</PackageReference>
+	</ItemGroup>-->
+	
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
+        <GoogleServicesJson Include="Platforms\Android\google-services.json" />
+        <PackageReference Include="Xamarin.Firebase.Messaging" Version="123.1.2.2" />
+        <PackageReference Include="Xamarin.Google.Dagger" Version="2.39.1" />
+    </ItemGroup>
+
+
+  
+    <ItemGroup>
+      <MauiXaml Update="AppShell.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="CustomControls\ImageButton.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="CustomControls\LoadingOverlay.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="CustomControls\ValidateEntry.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Resources\Styles\YarraTramsMobileStyles.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Views\Flyout\FlyoutContentPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Views\Login\CantLoginViewPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Views\Login\LoginPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Views\Login\PinPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Views\Registration\ConfirmationPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Views\Registration\RegistrationPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Views\WebView\SimpleWebViewPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Views\WebView\WebViewPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Views\Roster\RosterMonthlyViewPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Views\Roster\RosterViewPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Views\Roster\RosterWeeklyViewpage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Views\YourSay\ConfirmationViewPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Views\YourSay\YourSayFormViewPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Views\YourSay\YourSayViewPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Core\Core.csproj" />
+      <ProjectReference Include="..\Data\Data.csproj" />
+      <ProjectReference Include="..\SharedLogic\SharedLogic.csproj" />
+    </ItemGroup>
+
+      <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
+      <PackageReference Include="Plugin.CurrentActivity">
+        <Version>2.1.0.4</Version>
+      </PackageReference>
+    </ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Views\Registration\RegistrationPage.xaml.cs">
+	    <DependentUpon>RegistrationPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\WebView\SimpleWebViewPage.xaml.cs">
+	    <DependentUpon>SimpleWebViewPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+
+</Project>

@@ -1,0 +1,73 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Configurations>Debug;Release;Prod;Staging</Configurations>
+  </PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DefineConstants>DEBUG;TRACE;DEV</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Prod|AnyCPU'">
+		<DefineConstants>TRACE;PROD</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Staging|AnyCPU' ">
+		<IntermediateOutputPath>obj\Staging</IntermediateOutputPath>
+		<DebugType>portable</DebugType>
+		<Optimize>false</Optimize>
+		<OutputPath>bin\Staging</OutputPath>
+		<DefineConstants>STAGING</DefineConstants>
+		<NoWarn></NoWarn>
+		<NoStdLib>false</NoStdLib>
+	</PropertyGroup>
+	
+	
+  <ItemGroup>
+    <Compile Remove="Roster\**" />
+    <EmbeddedResource Remove="Roster\**" />
+    <None Remove="Roster\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="ConfigManager.cs" />
+    <Compile Remove="Database\EmptyClass.cs" />
+    <Compile Remove="Class1.cs" />
+    <Compile Remove="Database\AsyncHelper.cs" />
+    <Compile Remove="Database\DatabaseBlob.cs" />
+    <Compile Remove="Database\ILocalDatabase.cs" />
+    <Compile Remove="Database\ISQLiteFactory.cs" />
+    <Compile Remove="Database\LocalDatabase.cs" />
+    <Compile Remove="Database\LocalDatabaseSetup.cs" />
+    <Compile Remove="Database\ReflectionExtension.cs" />
+    <Compile Remove="DeviceManager.cs" />
+    <Compile Remove="NewsItemManager.cs" />
+    <Compile Remove="SPOnlineAuthenticator.cs" />
+    <Compile Remove="UserService.cs" />
+    
+    <Compile Remove="RosterManager_BASE_17235.cs" />
+    <Compile Remove="RosterManager_LOCAL_17235.cs" />
+    <Compile Remove="RosterManager_REMOTE_17235.cs" />
+    <Compile Remove="RosterManager_BACKUP_17235.cs" />
+    <Compile Remove="RosterManager_BASE_17235.cs" />
+    <Compile Remove="RosterManager_LOCAL_17235.cs" />
+    <Compile Remove="RosterManager_REMOTE_17235.cs" />
+    <Compile Remove="YourSayManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MonkeyCache" Version="2.1.2-beta" />
+    <PackageReference Include="MonkeyCache.FileStore" Version="2.1.2-beta" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="RosterManager.cs.orig" />
+    <None Remove="IRosterManager.config" />
+  </ItemGroup>
+</Project>

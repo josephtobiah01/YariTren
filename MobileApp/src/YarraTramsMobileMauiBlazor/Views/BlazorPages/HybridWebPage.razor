@@ -1,0 +1,119 @@
+﻿@page "/hybridwebview"
+@using Core
+@using Data.SharePoint.Authentication
+@using Microsoft.JSInterop
+@using System.Text.Json
+@implements IDisposable
+@inject IJSRuntime JS
+
+
+
+<div id="blazor-webview-container">
+    <iframe id="blazor-webview" style="width: 100%; height: 100%;" @ref="_iframeElement"></iframe>
+</div>
+
+<style>
+
+    #blazor-webview-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    #blazor-webview {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+</style>
+
+@code {
+
+    private ElementReference _iframeElement;
+    private IJSObjectReference? _module;
+    private DotNetObjectReference<HybridWebPage>? _dotNetRef;
+    private Dictionary<string, string>? _headers;
+
+
+
+    public SPAuthenticator authenticator;
+    public string[]? scope;
+
+    public string AccessToken { get; set; }
+    public string Url { get; set; }
+
+    public Dictionary<string, string>? Headers
+    {
+        get => _headers;
+        set => _headers = value ?? new Dictionary<string, string>();
+    }
+
+    [Parameter]
+    public EventCallback<string> OnNavigating { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnNavigated { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        authenticator = new SPAuthenticator();
+        _dotNetRef = DotNetObjectReference.Create(this);
+
+        await InitializeProperties();
+    }
+
+
+    public async Task InitializeProperties()
+    {
+        Url = Consts.NewsUrl;
+        scope = authenticator.GetDefaultScope();
+        string accessToken = await authenticator.GetAccessTokenAsync(scope);
+        Headers = new Dictionary<string, string>
+        {
+            ["Authorization"] = "Bearer " + accessToken
+        };
+
+        await InitializeWebViewPage(Url, Headers);
+    }
+
+    public async Task InitializeWebViewPage(string url, object headers)
+    {
+        await JS.InvokeVoidAsync("initializeWebViewPage", url, headers);
+    }
+
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // {
+    //     base.OnAfterRender(firstRender);
+
+    //     if (firstRender)
+    //     {
+    //         _module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/YarraTramsMobileMauiBlazor/hybridWebView.js");
+    //         await _module.InvokeVoidAsync("initialize", "blazor-webview", _dotNetRef, JsonSerializer.Serialize(new {url = Url, headers = Headers}));
+    //     }
+    // }
+
+    // private void LoadUrl()
+    // {
+    //     if (!string.IsNullOrEmpty(Url))
+    //     {
+    //         string headersJson = JsonSerializer.Serialize(Headers);
+    //         _module?.InvokeVoidAsync("loadUrl", Url, headersJson);
+    //     }
+    // }
+
+    [JSInvokable]
+    public Task InvokAction(string data)
+    {
+        OnNavigated.InvokeAsync(data);
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        _dotNetRef?.Dispose();
+        _module?.DisposeAsync();
+    }
+
+
+
+}

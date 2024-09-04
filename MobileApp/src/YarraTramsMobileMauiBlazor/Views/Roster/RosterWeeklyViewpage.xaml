@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:YarraTramsMobileMauiBlazor.Converters"
+             x:Class="YarraTramsMobileMauiBlazor.Views.Roster.RosterWeeklyViewpage">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converter:RosterTwoValueConverter x:Key="rosterTwoValueConverter" />
+            <!-- Week Template Start -->
+            <DataTemplate x:Key="weekTemplate">
+                <ViewCell>
+                    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="Fill" Margin="0,0,0,0" ClassId="{Binding Index}">
+                        <Grid.Triggers>
+                            <DataTrigger TargetType="Grid" Binding="{Binding IsExtended}" Value="True">
+                                <Setter Property="MinimumHeightRequest" Value="245" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Grid" Binding="{Binding IsExtended}" Value="False">
+                                <Setter Property="HeightRequest" Value="130" />
+                            </DataTrigger>
+                        </Grid.Triggers>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.1*" />
+                            <ColumnDefinition Width=".7*" />
+                            <ColumnDefinition Width="8.2*" />
+                        </Grid.ColumnDefinitions>
+                        <!-- Day and Date start (Left column of weekly view) -->
+                        <StackLayout Orientation="Vertical" VerticalOptions="Center">
+                            <Label Text="{Binding WorkDayDateDayString}" FontSize="24" TextColor="Black"  FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                            <Label Text="{Binding WeekOfDate}" FontSize="16" TextColor="Black" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                        </StackLayout>
+                        <!-- Day and Date end -->
+                        <BoxView Grid.Column="1" VerticalOptions="Fill" HorizontalOptions="CenterAndExpand" WidthRequest="2" Color="#D0D0CE" >
+                            <BoxView.Triggers>
+
+                                <DataTrigger TargetType="BoxView" Binding="{Binding Index}" Value="0">
+                                    <Setter Property="Margin" Value="0,15,0,-30" />
+                                </DataTrigger>
+
+                            </BoxView.Triggers>
+                        </BoxView>
+                        <Image Grid.Column="1" Source="currentdayweekly" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" HeightRequest="40" WidthRequest="40" Aspect="AspectFill">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image" Binding="{Binding IsToday}" Value="False">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </Image.Triggers>
+                        </Image>
+                        <Image Grid.Column="1" Source="futuredayweekly" VerticalOptions="Center" HeightRequest="12" WidthRequest="12" Aspect="AspectFit">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image" Binding="{Binding IsToday}" Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </Image.Triggers>
+                        </Image>
+
+                        <!--   Roster Tile-->
+                        <Frame Grid.Column="2" CornerRadius="5" Margin="4,15,4,15" HasShadow="true" HorizontalOptions="FillAndExpand" BackgroundColor="White" >
+                            <Frame.Triggers>
+                                <DataTrigger TargetType="Frame" Binding="{Binding IsNonRoster}" Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+
+                                <DataTrigger TargetType="Frame" Binding="{Binding DutyID,Converter={StaticResource rosterTwoValueConverter},ConverterParameter=false}" Value="True">
+                                    <Setter Property="IsVisible" Value="True" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame" Binding="{Binding DutyID,Converter={StaticResource rosterTwoValueConverter},ConverterParameter=false}" Value="False">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </Frame.Triggers>
+                            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="23" />
+                                    <RowDefinition Height="23" />
+                                    <RowDefinition Height="75*" />
+                                    <!-- This is the extended part-->
+                                </Grid.RowDefinitions>
+                                <StackLayout Grid.Row="0" Orientation="Horizontal" VerticalOptions="Start">
+                                    <Label Text="{Binding DutyID}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                    <Label Text="{Binding DutyType}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" FontSize="16" TextColor="Black" HorizontalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                    <Label Text="{Binding LocationStart}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" FontSize="16" TextColor="Black" HorizontalTextAlignment="End" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                </StackLayout>
+                                <Grid Grid.Row="1" VerticalOptions="Start">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="23" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="23*"/>
+                                        <ColumnDefinition Width="23*"/>
+                                        <ColumnDefinition Width="20*"/>
+                                        <ColumnDefinition Width="34*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Text="Start" HorizontalOptions="FillAndExpand" VerticalOptions="Center" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                    <Label Grid.Column="1" Text="{Binding StartTime}" HorizontalOptions="FillAndExpand" VerticalOptions="Center" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                    <Label Grid.Column="2" Text="End" HorizontalOptions="FillAndExpand" VerticalOptions="Center" FontSize="16" TextColor="Black" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" HorizontalTextAlignment="Center" />
+                                    <Label Grid.Column="3" Text="{Binding EndTime}" HorizontalOptions="FillAndExpand" VerticalOptions="Center" FontSize="16" TextColor="Black" HorizontalTextAlignment="End" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                </Grid>
+                                <!-- Extended part -->
+                                <StackLayout Grid.Row="2" Orientation="Vertical" x:Name="ExtendedPart" VerticalOptions="StartAndExpand">
+                                    <StackLayout.Margin>
+                                        <OnPlatform x:TypeArguments="Thickness">
+                                            <On Platform="iOS" Value="0,48,0,0" />
+                                            <On Platform="Android, UWP" Value="0,36,0,0" />
+                                        </OnPlatform>
+                                    </StackLayout.Margin>
+                                    <StackLayout.Triggers>
+                                        <DataTrigger TargetType="StackLayout" Binding="{Binding IsExtended}" Value="True">
+                                            <Setter Property="IsVisible" Value="True" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="StackLayout" Binding="{Binding IsExtended}" Value="False">
+                                            <Setter Property="IsVisible" Value="False" />
+                                        </DataTrigger>
+                                    </StackLayout.Triggers>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="23*"/>
+                                            <ColumnDefinition Width="23*"/>
+                                            <ColumnDefinition Width="20*"/>
+                                            <ColumnDefinition Width="34*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0" Text="Meal" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                        <Label Grid.Column="1" Text="{Binding MealLocation}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                        <Label Grid.Column="2" Text="{Binding MealStart}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                        <Label Grid.Column="3" Text="{Binding MealEnd}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="End" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="23*"/>
+                                            <ColumnDefinition Width="23*"/>
+                                            <ColumnDefinition Width="20*"/>
+                                            <ColumnDefinition Width="34*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Work" HorizontalOptions="StartAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                        <Label  Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding WorkingDuration}"
+                                    HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black"  HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="23*"/>
+                                            <ColumnDefinition Width="23*"/>
+                                            <ColumnDefinition Width="20*"/>
+                                            <ColumnDefinition Width="34*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0"  Grid.ColumnSpan="2" Text="Spread" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                        <Label Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding SplitDuration}" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                    </Grid>
+                                </StackLayout>
+                                <!-- Extended part end -->
+                            </Grid>
+                        </Frame>
+                        <Frame BackgroundColor="Transparent" Grid.Column="2" VerticalOptions="Fill" HorizontalOptions="FillAndExpand">
+                            <Frame.Triggers>
+                                <DataTrigger TargetType="Frame" Binding="{Binding IsNonRoster}" Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame" Binding="{Binding IsExtended}" Value="False">
+                                    <Setter Property="IsVisible" Value="True" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame" Binding="{Binding DutyID,Converter={StaticResource rosterTwoValueConverter},ConverterParameter=false}" Value="True">
+                                    <Setter Property="IsVisible" Value="True" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame" Binding="{Binding DutyID,Converter={StaticResource rosterTwoValueConverter},ConverterParameter=false}" Value="False">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame" Binding="{Binding IsExtended}" Value="True">
+                                    <Setter Property="Margin" Value="7,70,7,-5" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame" Binding="{Binding IsNonRoster}" Value="False">
+                                    <Setter Property="Margin" Value="7,80,7,-15" />
+                                </DataTrigger>
+                            </Frame.Triggers>
+                            <Frame.HasShadow>
+                                <OnPlatform x:TypeArguments="x:Boolean">
+                                    <On Platform="Android" Value="true"/>
+                                    <On Platform="iOS" Value="false"/>
+                                </OnPlatform>
+                            </Frame.HasShadow>
+                            <Image VerticalOptions="StartAndExpand" HeightRequest="25" WidthRequest="200" Aspect="AspectFit">
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image" Binding="{Binding IsExtended}" Value="True">
+                                        <Setter Property="Source" Value="arrowupsepweekly" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image" Binding="{Binding IsExtended}" Value="False">
+                                        <Setter Property="Source" Value="arrowdownweekly" />
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
+                        </Frame>
+
+                        <!--   Roster Tile CDO -->
+                        <Frame Grid.Column="2" CornerRadius="5" Margin="4,15,4,15" HasShadow="true" HorizontalOptions="FillAndExpand" BorderColor="#007B4B" BackgroundColor="#78BE20">
+                            <Frame.Triggers>
+                                <DataTrigger TargetType="Frame" Binding="{Binding IsNonRoster}" Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame" Binding="{Binding DutyID,Converter={StaticResource rosterTwoValueConverter},ConverterParameter=false}" Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame" Binding="{Binding DutyID,Converter={StaticResource rosterTwoValueConverter},ConverterParameter=false}" Value="False">
+                                    <Setter Property="IsVisible" Value="True" />
+                                </DataTrigger>
+                            </Frame.Triggers>
+                            <Grid Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="23" />
+                                    <RowDefinition Height="23" />
+                                    <RowDefinition Height="75*" />
+                                    <!-- This is the extended part-->
+                                </Grid.RowDefinitions>
+                                <StackLayout Grid.Row="0" Orientation="Horizontal" VerticalOptions="Start">
+                                    <Label Text="{Binding DutyID}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" FontSize="16" TextColor="White" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                    <Label Text="{Binding DutyType}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" FontSize="16" TextColor="White" HorizontalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                    <Label Text="{Binding LocationStart}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" FontSize="16" TextColor="White" HorizontalTextAlignment="End" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                </StackLayout>
+                                <Grid Grid.Row="1" VerticalOptions="Start">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="23" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="23*"/>
+                                        <ColumnDefinition Width="23*"/>
+                                        <ColumnDefinition Width="20*"/>
+                                        <ColumnDefinition Width="34*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Text="Start" HorizontalOptions="FillAndExpand" VerticalOptions="Center" FontSize="16" TextColor="White" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                    <Label Grid.Column="1" Text="{Binding StartTime}" HorizontalOptions="FillAndExpand" VerticalOptions="Center" FontSize="16" TextColor="White" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                    <Label Grid.Column="2" Text="End" HorizontalOptions="FillAndExpand" VerticalOptions="Center" FontSize="16" TextColor="White" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" HorizontalTextAlignment="Center" />
+                                    <Label Grid.Column="3" Text="{Binding EndTime}" HorizontalOptions="FillAndExpand" VerticalOptions="Center" FontSize="16" TextColor="White" HorizontalTextAlignment="End" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                </Grid>
+                                <!-- Extended Part CDO -->
+                                <StackLayout Grid.Row="2" Orientation="Vertical" x:Name="ExtendedCDOPart" VerticalOptions="StartAndExpand">
+                                    <StackLayout.Margin>
+                                        <OnPlatform x:TypeArguments="Thickness">
+                                            <On Platform="iOS" Value="0,48,0,0" />
+                                            <On Platform="Android, UWP" Value="0,36,0,0" />
+                                        </OnPlatform>
+                                    </StackLayout.Margin>
+
+                                    <StackLayout.Triggers>
+                                        <DataTrigger TargetType="StackLayout" Binding="{Binding IsExtended}" Value="True">
+                                            <Setter Property="IsVisible" Value="True" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="StackLayout" Binding="{Binding IsExtended}" Value="False">
+                                            <Setter Property="IsVisible" Value="False" />
+                                        </DataTrigger>
+                                    </StackLayout.Triggers>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="23*"/>
+                                            <ColumnDefinition Width="23*"/>
+                                            <ColumnDefinition Width="20*"/>
+                                            <ColumnDefinition Width="34*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0" Text="Meal" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="White" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                        <Label Grid.Column="1" Text="{Binding MealLocation}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="White" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                        <Label Grid.Column="2" Text="{Binding MealStart}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="White" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                        <Label Grid.Column="3" Text="{Binding MealEnd}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="White" HorizontalTextAlignment="End" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="23*"/>
+                                            <ColumnDefinition Width="23*"/>
+                                            <ColumnDefinition Width="20*"/>
+                                            <ColumnDefinition Width="34*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Work" HorizontalOptions="StartAndExpand" FontSize="16" TextColor="White" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                        <Label  Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding WorkingDuration}"
+                                    HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="White"  HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="23*"/>
+                                            <ColumnDefinition Width="23*"/>
+                                            <ColumnDefinition Width="20*"/>
+                                            <ColumnDefinition Width="34*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0" Grid.ColumnSpan="2" Text="Spread" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" FontSize="16" TextColor="White" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                        <Label Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding SplitDuration}" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" FontSize="16" TextColor="White" HorizontalTextAlignment="Start" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                                    </Grid>
+                                </StackLayout>
+                                <!-- Extended Part CDO End -->
+                            </Grid>
+                        </Frame>
+                        <Frame BackgroundColor="Transparent" Grid.Column="2" VerticalOptions="Fill" HorizontalOptions="FillAndExpand">
+                            <Frame.Triggers>
+                                <DataTrigger TargetType="Frame" Binding="{Binding IsNonRoster}" Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame" Binding="{Binding IsExtended}" Value="False">
+                                    <Setter Property="IsVisible" Value="True" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame" Binding="{Binding DutyID,Converter={StaticResource rosterTwoValueConverter},ConverterParameter=false}" Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame" Binding="{Binding DutyID,Converter={StaticResource rosterTwoValueConverter},ConverterParameter=false}" Value="False">
+                                    <Setter Property="IsVisible" Value="True" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame" Binding="{Binding IsExtended}" Value="True">
+                                    <Setter Property="Margin" Value="7,70,7,-5" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame" Binding="{Binding IsNonRoster}" Value="False">
+                                    <Setter Property="Margin" Value="7,80,7,-15" />
+                                </DataTrigger>
+                            </Frame.Triggers>
+                            <Frame.HasShadow>
+                                <OnPlatform x:TypeArguments="x:Boolean">
+                                    <On Platform="Android" Value="true"/>
+                                    <On Platform="iOS" Value="false"/>
+                                </OnPlatform>
+                            </Frame.HasShadow>
+                            <Image VerticalOptions="StartAndExpand" HeightRequest="25" WidthRequest="200" Aspect="AspectFit">
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image" Binding="{Binding IsExtended}" Value="True">
+                                        <Setter Property="Source" Value="arrowupweeklygn" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image" Binding="{Binding IsExtended}" Value="False">
+                                        <Setter Property="Source" Value="arrowcirclegn" />
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
+                        </Frame>
+
+                        <!-- Non roster Tile-->
+                        <Frame Grid.Column="2" CornerRadius="5" Margin="4,15,4,15" HasShadow="true" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White" >
+                            <Label Text="Refer to Yardsheet" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                            <Frame.Triggers>
+                                <DataTrigger TargetType="Frame" Binding="{Binding IsNonRoster}" Value="True">
+                                    <Setter Property="IsVisible" Value="True" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Frame" Binding="{Binding IsNonRoster}" Value="False">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </Frame.Triggers>
+                        </Frame>
+
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+            <!-- Week Template End -->
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <ContentView.Content>
+        <Grid x:Name="weeklayout" IsVisible="{Binding IsWeekVisible}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="7*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.Column="0" HorizontalOptions="Start" HeightRequest="50" WidthRequest="80" Aspect="AspectFit" >
+                    <Image.Triggers>
+                        <DataTrigger TargetType="Image" Binding="{Binding IsWeekLeftArrow}" Value="False">
+                            <Setter Property="Source" Value="arrowinactiveleft" />
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Image" Binding="{Binding IsWeekLeftArrow}" Value="True">
+                            <Setter Property="Source" Value="arrowactiveleft" />
+                            <Setter Property="IsEnabled" Value="True" />
+                        </DataTrigger>
+                    </Image.Triggers>
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="WeekLeftArrow_Handle_Tapped" />
+                    </Image.GestureRecognizers>
+                </Image>
+                <Label Grid.Column="1" Text="{Binding WeekRange}" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" FontSize="16" TextColor="Black" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+
+                <Image Grid.Column="2" HorizontalOptions="EndAndExpand" HeightRequest="50" WidthRequest="80" Aspect="AspectFit">
+                    <Image.Triggers>
+                        <DataTrigger TargetType="Image" Binding="{Binding IsWeekRightArrow}" Value="False">
+                            <Setter Property="Source" Value="arrowinactiveright" />
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Image" Binding="{Binding IsWeekRightArrow}" Value="True">
+                            <Setter Property="Source" Value="arrowactiveright" />
+                            <Setter Property="IsEnabled" Value="True" />
+                        </DataTrigger>
+                    </Image.Triggers>
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="WeekRightArrow_Handle_Tapped" />
+                    </Image.GestureRecognizers>
+                </Image>
+
+
+            </Grid>
+            <ListView Margin="15,0,5,0" 
+                      Grid.Row="1" x:Name="lstWeekItem" 
+                      SeparatorVisibility="None" 
+                      HasUnevenRows="true" 
+                      SelectionMode="None" 
+                      VerticalOptions="FillAndExpand" BackgroundColor="White">
+
+            </ListView>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

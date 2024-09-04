@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:customhandlers="clr-namespace:YarraTramsMobileMauiBlazor.CustomHandlers"
+    xmlns:vm="clr-namespace:YarraTramsMobileMauiBlazor.ViewModels.Registration"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Shell.NavBarIsVisible="False"
+    x:DataType="vm:ConfirmationPageViewModel"
+    x:Class="YarraTramsMobileMauiBlazor.Views.Registration.ConfirmationPage">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior
+            StatusBarColor="{AppThemeBinding Dark=blue, Light=blue}"
+            StatusBarStyle="LightContent"/>
+    </ContentPage.Behaviors>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label" BasedOn="{StaticResource MontserratMedium}">
+                <Setter Property="TextColor" Value="White" />
+            </Style>
+            <Style TargetType="customhandlers:CustomEntry">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="PlaceholderColor" Value="White" />
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Image Source="bluebackground.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="Fill" />
+            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" 
+                Margin="50,40,50,0"              
+                Text="Thank you for registering." 
+                TextColor="White" 
+                            HorizontalTextAlignment = "Start"
+                            VerticalOptions="Center"
+                            FontSize="20"
+                            Style="{StaticResource MontserratRegular}"/>
+
+                <Label Grid.Row="1"  Margin="50,30,50,0"    
+                            TextColor="White" 
+                            Text="Thank you for your registration. This has been forwarded to the relevant department for action." 
+                            HorizontalTextAlignment = "Start"
+                            VerticalOptions="Center"
+                            FontSize="16"
+                            Style="{StaticResource MontserratRegular}"/>
+
+                <Button Grid.Row="2" 
+                            Margin="50,40,50,40" 
+                            Text="RETURN TO LOGIN" 
+                            TextColor="White" 
+                            FontSize="14"
+                            CornerRadius="5" 
+                            FontFamily="{OnPlatform Android=Montserrat-Bold, iOS=Montserrat-Bold}"
+                            BackgroundColor="#004F71"
+                            HorizontalOptions="FillAndExpand" 
+                            VerticalOptions="Start" 
+                            Opacity="1"  
+                            Command="{Binding ReturnToLogin}">
+                </Button>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+
+</ContentPage>

@@ -1,0 +1,44 @@
+
+parameters:
+  buildConfig: ''
+  version: ''
+  apkNameWithoutFileExt: ''
+  outputDirectory: ''
+
+    # Build Android package
+steps:
+- task: XamarinAndroid@1
+  name: 'Build${{ parameters.buildConfig }}'
+  displayName: 'Build Android Package - ${{ parameters.buildConfig }}'
+  inputs:
+    projectFile: '**/YarraTramsMobile.Android.csproj'
+    outputDirectory: '${{ parameters.outputDirectory }}'
+    Configuration: '${{ parameters.buildConfig }}'
+    msbuildVersionOption: "16.0"
+    clean: true
+    createAppPackage: true
+    msBuildArguments: '/p:BuildPlatform=Server'
+    logFileVerbosity: 'Diagnostic'
+
+- task: AndroidSigning@3
+  name: 'Signing${{ parameters.buildConfig }}'
+  displayName: 'Signing Android Package - ${{ parameters.buildConfig }}'  
+  inputs:
+    apkFiles: '${{ parameters.outputDirectory }}/${{ parameters.apkNameWithoutFileExt }}.apk'
+    apksignerKeystoreFile: 'mrstrong.keystore'
+    apksignerKeystorePassword: $(key.password)
+    apksignerKeystoreAlias: $(key.alias)
+    apksignerKeyPassword: $(key.password)
+
+- task: CopyFiles@2
+  displayName: 'Copy APK to Staging Directory'
+  condition: succeeded() 
+  inputs:
+    sourceFolder: '${{ parameters.outputDirectory }}'
+    contents: '${{ parameters.apkNameWithoutFileExt }}.apk'
+    targetFolder: $(Build.ArtifactStagingDirectory)
+
+- task: CmdLine@2
+  displayName: Renaming apk file
+  inputs:
+    script: ren $(Build.ArtifactStagingDirectory)\${{ parameters.apkNameWithoutFileExt }}.apk ${{ parameters.buildConfig }}.${{ parameters.apkNameWithoutFileExt }}.${{ parameters.version }}.apk

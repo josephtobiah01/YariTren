@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="YarraTramsMobileMauiBlazor.Views.YourSay.ConfirmationViewPage"
+             xmlns:vm="clr-namespace:YarraTramsMobileMauiBlazor.ViewModels.YourSay"
+             x:DataType="vm:ConfirmationViewPageViewModel"
+             Shell.PresentationMode="Modal"
+             BackgroundColor="{AppThemeBinding Dark=white, Light=white}">
+    
+    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label 
+            Grid.Row="0" 
+            Margin="50,40,50,0"              
+            Text="Thank you for providing your feedback." 
+            TextColor="Black"
+            HorizontalTextAlignment = "Start"
+            VerticalOptions="Center"
+            FontSize="20"
+            FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+
+        <Label 
+            Grid.Row="1"  Margin="50,30,50,0"    
+            Text="Thank you for your feedback or suggestion. This has been forwarded to the relevant department for action." 
+            TextColor="Black"
+            HorizontalTextAlignment = "Start"
+            VerticalOptions="Center"
+            FontSize="16"
+            FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+
+
+        <Button 
+            Grid.Row="2" 
+            Margin="50,40,50,40" 
+            Text="Return to Home" 
+            TextColor="White" 
+            FontSize="14"
+            CornerRadius="5" 
+            FontFamily="{OnPlatform Android=Montserrat-Bold, iOS=Montserrat-Bold}"
+            BackgroundColor="#CE0F69" 
+            HorizontalOptions="FillAndExpand" 
+            VerticalOptions="Start" 
+            Opacity="1"  
+            Command="{Binding ConfirmationCommand}">
+        </Button>
+    </Grid>
+</ContentPage>

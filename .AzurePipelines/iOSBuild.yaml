@@ -1,0 +1,113 @@
+trigger:
+- master
+
+variables:
+- group: variables
+- name: DotNetVersion
+  value: '8.0.100'
+- name: VSVERSION
+  value: '17.*'
+
+stages:
+- stage: BuildiOS
+  jobs:
+  - job: BuildDebug
+    displayName: Build YarraTrams App (Debug)
+    pool:
+      vmImage: 'macOS-13'
+      demands:
+        - msbuild
+
+    variables:
+      BuildConfiguration: Debug
+      Configuration: DEV
+
+    steps:
+    - task: UseDotNet@2
+      displayName: .NET Version
+      inputs:
+        packageType: 'sdk'
+        version: '$(DotNetVersion)'
+
+    - task: Bash@3
+      displayName: Install MAUI
+      inputs:
+        targetType: 'inline'
+        script: |
+            cd "$(Build.SourcesDirectory)"
+            dotnet nuget locals all --clear
+            dotnet workload install maui 
+
+    - task: Bash@3
+      displayName: Check and Set Xcode Version
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo "Available Xcode versions:"
+          ls /Applications/ | grep Xcode
+          if [ -d "/Applications/Xcode_15.1.app" ]; then
+            sudo xcode-select -switch /Applications/Xcode_15.1.app/Contents/Developer
+            echo "Xcode version set to 15.1"
+          else
+            echo "Xcode 15.1 not found, using default version"
+            exit 1
+          fi
+
+    - task: InstallAppleCertificate@2
+      displayName: 'Install apple certificate'
+      inputs:
+        certSecureFile: Apple Development-Peter Strong - Yarra Trams-2024.p12
+        certPwd: '$(AppleCertificate-Password)'
+        keychain: 'temp'
+
+    - task: InstallAppleProvisioningProfile@1
+      displayName: 'Install app store provisioning profile'
+      inputs:
+        provProfileSecureFile: YTDingYarraTrams_Development2024.mobileprovision
+
+    - task: Bash@3
+      displayName: Validate provisioning profile
+      inputs:   
+        targetType: 'inline'
+        script: |
+          echo "Listing provisioning profiles in ~/Library/MobileDevice/Provisioning Profiles:"
+          ls ~/Library/MobileDevice/Provisioning\ Profiles/
+          echo "Contents of provisioning profiles directory:"
+          for file in ~/Library/MobileDevice/Provisioning\ Profiles/*; do
+            echo "Profile: $file"
+          done
+
+    - task: Bash@3
+      displayName: Add DevExpress NuGet Source
+      inputs:
+        targetType: 'inline'
+        script: |
+          dotnet nuget add source https://nuget.devexpress.com/gq79RUOaP6iEOWFFihuOATa3otWdIRU6vk6Wfkxgizb21GrEua/api -n DevExpress
+
+    - task: Bash@3
+      displayName: Restore nuget
+      inputs:
+        targetType: 'inline'
+        script: |
+          cd "$(Build.SourcesDirectory)/MobileApp/src/YarraTramsMobileMauiBlazor"
+          dotnet restore YarraTramsMobileMauiBlazor.csproj
+
+    - task: Bash@3
+      displayName: Build iOS App (Debug)
+      inputs:
+        targetType: 'inline'
+        script: |
+          cd "$(Build.SourcesDirectory)/MobileApp/src/YarraTramsMobileMauiBlazor"
+          dotnet publish -f net8.0-ios -c Debug -p:RuntimeIdentifier=ios-arm64
+
+    - task: CopyFiles@2
+      displayName: Copy build output to staging
+      inputs:
+        SourceFolder: "$(Agent.BuildDirectory)/s/MobileApp/src/YarraTramsMobileMauiBlazor/bin/$(BuildConfiguration)/net8.0-ios/ios-arm64/publish"
+        Contents: "**/*.ipa"
+        TargetFolder: "$(Build.ArtifactStagingDirectory)"
+        flattenFolders: true
+
+    - publish: $(Build.ArtifactStagingDirectory)
+      artifact: drop_ios_debug
+

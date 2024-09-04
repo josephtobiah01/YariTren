@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:YarraTramsMobileMauiBlazor.ViewModels.YourSay"
+             xmlns:local="clr-namespace:YarraTramsMobileMauiBlazor.CustomControls"
+             x:DataType="vm:YourSayFormViewPageViewModel"
+             x:Class="YarraTramsMobileMauiBlazor.Views.YourSay.YourSayFormViewPage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Shell.NavBarIsVisible="True">
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding GoBack}" />
+    </Shell.BackButtonBehavior>
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior
+        StatusBarColor="{AppThemeBinding Dark=Gray, Light=Gray}"/>
+    </ContentPage.Behaviors>
+
+    <Shell.TitleView>
+        <Grid
+            Margin="0"
+            BackgroundColor="Gray"
+            HeightRequest="75"
+            Padding="15,35">
+
+            <Image
+            Grid.Column="1"
+            Source="kdyttopbarlogo"
+            Margin="0"
+            HeightRequest="35"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Aspect="AspectFit"
+            BackgroundColor="Gray"/>
+        </Grid>
+    </Shell.TitleView>
+
+    <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="#F9F9F9">
+
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Vertical" Margin="18,30,18,18" BackgroundColor="#F9F9F9">
+
+            <Label  
+                Text="Your Say Feedback" 
+                HorizontalTextAlignment = "Start"
+                VerticalOptions="Center"
+                FontSize="24"
+                TextColor="Black"
+                FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+
+            <Label  
+                Text="{Binding OverviewText}" 
+                HorizontalTextAlignment = "Start"
+                VerticalOptions="Center"
+                FontSize="16"
+                Margin="0,20,0,0"
+                TextColor="Black"
+                FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+
+            <Label  
+                Text="Details of your experience:" 
+                HorizontalTextAlignment = "Start"
+                VerticalOptions="Center"
+                FontSize="16"
+                Margin="0,30,0,0"
+                TextColor="Black"
+                FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+
+            <Grid 
+                HorizontalOptions="FillAndExpand" 
+                VerticalOptions="Start" 
+                Margin="0,25,0,0">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".5*"/>
+                    <ColumnDefinition Width=".5*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <DatePicker 
+                    Grid.Column="0"
+                    Date="{Binding YourSay.ExperienceDate}"
+                    HeightRequest="50"
+                    Format="dd MMM yyyy"
+                    BackgroundColor="White"
+                    FontSize="16"
+                    TextColor="Black"
+                    FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"
+                    HorizontalOptions="FillAndExpand"/>
+
+                <TimePicker 
+                    x:Name="_timePicker"
+                    Grid.Column="1"
+                    Time="{Binding TimeExperience}"
+                    Format="t"
+                    HeightRequest="50"
+                    BackgroundColor="White"
+                    Margin="20, 0, 0, 0"
+                    FontSize="16"
+                    TextColor="Black"
+                    FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"
+                    HorizontalOptions="FillAndExpand" />
+                
+                <Label  
+                    Grid.Row="1"
+                    Text="Date of experience" 
+                    HorizontalTextAlignment = "Start"
+                    VerticalOptions="Center"
+                    FontSize="12"
+                    TextColor="Black"
+                    FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+                
+                <Label  
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Text="Time of experience" 
+                    HorizontalTextAlignment = "Start"
+                    VerticalOptions="Center"
+                    FontSize="12"
+                    Margin="20, 0, 0, 0"
+                    TextColor="Black"
+                    FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+                
+            </Grid>
+
+            <Entry  
+                HorizontalTextAlignment = "Start"
+                VerticalOptions="Center"
+                HorizontalOptions="FillAndExpand"
+                FontSize="16"
+                Placeholder="Feedback subject"
+                PlaceholderColor="LightGray"
+                Margin="0, 30, 0, 0"
+                HeightRequest="50"
+                MaxLength="40"
+                TextColor="Black"
+                BackgroundColor="White"
+                Text="{Binding YourSay.Title}"
+                TextChanged="Provide_Feedback_Title_Handle_TextChanged"
+                FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+
+            <Label   
+                x:Name="providefeedbackTitleRemaining"
+                Text="40 characters remaining" 
+                HorizontalTextAlignment = "Start"
+                VerticalOptions="Center"
+                FontSize="12"
+                TextColor="Black"
+                FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+
+            <Editor  
+                VerticalOptions="Start"
+                HorizontalOptions="FillAndExpand"
+                FontSize="16"
+                HeightRequest="169"
+                Placeholder="Please provide details of your experience or incident that you observed"
+                Margin="0, 10, 0, 0"
+                MaxLength="2000"
+                TextColor="Black"
+                PlaceholderColor="Gray"
+                Text="{Binding YourSay.FeedbackMessage}"
+                TextChanged = "Provide_Feedback_Details_Handle_TextChanged"
+                BackgroundColor="White"
+                FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+            
+            <Label   
+                x:Name="providefeedbackDetailsRemaining"
+                Text="2000 characters remaining" 
+                HorizontalTextAlignment = "Start"
+                VerticalOptions="Center"
+                FontSize="12"
+                TextColor="Black"
+                FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+
+            <Label  
+                Text="Does your experience relate to travel?" 
+                HorizontalTextAlignment = "Start"
+                VerticalOptions="Center"
+                FontSize="16"
+                Margin="0,30,0,0"
+                TextColor="Black"
+                FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+
+
+            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="Start" Margin="0,20,0,0">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".5*"/>
+                    <ColumnDefinition Width=".5*"/>
+                </Grid.ColumnDefinitions>
+
+                <local:ImageButton 
+                    Text = "Yes"
+                    ImageSource = "tick_circle"
+                    Value = "{Binding TravelExperienceYes}"
+                    Command = "{Binding TravelExperienceCommandYes}"/>
+                
+                <local:ImageButton
+                    Grid.Column="1"
+                    Text = "No"
+                    ImageSource = "cross_circle"
+                    Margin="20,0,0,0"
+                    Value = "{Binding TravelExperienceNo}"
+                    Command = "{Binding TravelExperienceCommandNo}"/>
+
+            </Grid>
+
+            <!--Expand part Travel Experience-->
+            <Grid x:Name="travelExperience" HorizontalOptions="FillAndExpand" VerticalOptions="Start" IsVisible="{Binding IsVisibleTravelExperience}">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Picker  
+                    VerticalOptions="Center"
+                    HorizontalOptions="FillAndExpand"
+                    FontSize="16"
+                    Title="Journey route"
+                    Margin="0, 30, 0, 0"
+                    HeightRequest="50"
+                    BackgroundColor="White"
+                    TitleColor="Gray"
+                    TextColor="Black"
+                    SelectedItem="{Binding SelectedRoute}"
+                    ItemsSource="{Binding JourneyRoutes}"
+                    ItemDisplayBinding="{Binding DisplayName}"
+                    FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+                
+                
+                <Grid Grid.Row="1" Margin="0,30,0,0" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".5*"/>
+                        <ColumnDefinition Width=".5*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    
+                    <Entry  
+                        HorizontalTextAlignment = "Start"
+                        VerticalOptions="Center"
+                        HorizontalOptions="FillAndExpand"
+                        FontSize="16"
+                        Text="{Binding YourSay.JourneyFrom}"
+                        Placeholder="From"
+                        TextColor="Black"
+                        PlaceholderColor="Gray"
+                        HeightRequest="50"
+                        BackgroundColor="White"
+                        FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+                    
+                    <Entry  
+                        Grid.Column="1"
+                        HorizontalTextAlignment = "Start"
+                        VerticalOptions="Center"
+                        HorizontalOptions="FillAndExpand"
+                        FontSize="16"
+                        Text="{Binding YourSay.JourneyTo}"
+                        TextColor="Black"
+                        Placeholder="To"
+                        PlaceholderColor="Gray"
+                        HeightRequest="50"
+                        BackgroundColor="White"
+                        Margin="20,0,0,0"
+                        FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+                    
+                </Grid>
+                
+                <Picker 
+                    Grid.Row="2"
+                    VerticalOptions="Center"
+                    HorizontalOptions="FillAndExpand"
+                    Margin="0, 30, 0, 0"
+                    HeightRequest="50" 
+                    BackgroundColor="White"
+                    FontSize="16"
+                    TitleColor="Gray"
+                    TextColor="Black"
+                    SelectedItem="{Binding SelectedDirection}"
+                    FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"
+                    Title="Travel direction"
+                    ItemsSource="{Binding TravelDirections}">
+                </Picker>
+
+                <Entry  Grid.Row="3"
+                 HorizontalTextAlignment = "Start"
+                 VerticalOptions="Center"
+                 HorizontalOptions="FillAndExpand"
+                 FontSize="16"
+                 Text="{Binding YourSay.TramNumber}"
+                        TextColor="Black"
+                 Placeholder="Tram number (optional)"
+                        PlaceholderColor="LightGray"
+                 Margin="0, 30, 0, 0"
+                 HeightRequest="50"
+                 MaxLength="40"
+                 BackgroundColor="White"
+                 FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+            </Grid>
+
+            <StackLayout  
+                HeightRequest="50"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="FillAndExpand"
+                Margin="0, 30, 0, 0"
+                BackgroundColor="White">
+
+                <Label  
+                    HorizontalTextAlignment = "Start"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="FillAndExpand"
+                    FontSize="16"
+                    VerticalTextAlignment="Center"
+                    Text="{Binding AttachPhotoName}"
+                    Margin="10, 0, 0, 0"
+                    TextColor="Black"
+                    HeightRequest="50"
+                    BackgroundColor="White"
+                    FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AttachPhotoCommand}" />
+                </StackLayout.GestureRecognizers>
+
+            </StackLayout>
+
+            <Label  
+                Text="Maximum file size 8MB" 
+                HorizontalTextAlignment = "Start"
+                VerticalOptions="Center"
+                FontSize="12"
+                TextColor="Black"
+                Margin="0, 5, 0, 0"
+                FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+
+            <Label  
+                Text="Would you like to receive a response to your feedback?" 
+                HorizontalTextAlignment = "Start"
+                VerticalOptions="Center"
+                FontSize="16"
+                Margin="0,30,0,0"
+                TextColor="Black"
+                FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+
+            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="Start" Margin="0,20,0,0">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".5*"/>
+                    <ColumnDefinition Width=".5*"/>
+                </Grid.ColumnDefinitions>
+
+                <local:ImageButton
+                   Text = "Yes"
+                   ImageSource = "tick_circle"
+                   Value = "{Binding ResponseFeedbackYes}"
+                   Command = "{Binding ResponseFeedbackCommandYes}"/>
+                
+                <local:ImageButton
+                  Grid.Column="1"
+                  Text = "No"
+                  ImageSource = "cross_circle"
+                  Margin="20,0,0,0"
+                  Value = "{Binding ResponseFeedbackNo}"
+                  Command = "{Binding ResponseFeedbackCommandNo}"/>
+                
+            </Grid>
+
+            <!--Expand part-->
+            <Grid x:Name="responseFeedback" HorizontalOptions="FillAndExpand" VerticalOptions="Start" IsVisible="{Binding IsVisibleResponseFeedback}">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Entry 
+                    HorizontalTextAlignment = "Start"
+                    VerticalOptions="Center"
+                    HorizontalOptions="FillAndExpand"
+                    FontSize="16"
+                    Keyboard="Email"
+                    Text="{Binding YourSay.Email}"
+                    TextColor="Black"
+                    Placeholder="Email address"
+                    PlaceholderColor="Gray"
+                    Margin="0, 30, 0, 0"
+                    HeightRequest="50"
+                    BackgroundColor="White"
+                    FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+
+                <Label     
+                    Grid.Row="1"
+                    Text="Please enter an email address" 
+                    TextColor="Black"
+                    HorizontalTextAlignment = "Start"
+                    VerticalOptions="Center"
+                    FontSize="12"
+                    FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+
+                <Entry     
+                    Grid.Row="2"
+                    HorizontalTextAlignment = "Start"
+                    VerticalOptions="Center"
+                    HorizontalOptions="FillAndExpand"
+                    FontSize="16"
+                    Keyboard = "Telephone"
+                    Text="{Binding YourSay.MobileNumber}"
+                    TextColor="Black"
+                    Placeholder="Phone number"
+                    PlaceholderColor="Gray"
+                    Margin="0, 30, 0, 0"
+                    HeightRequest="50"
+                    BackgroundColor="White"
+                    FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+
+                <Label  
+                    Grid.Row="3"
+                    Text="Please enter a phone number" 
+                    TextColor="Black"
+                    HorizontalTextAlignment = "Start"
+                    VerticalOptions="Center"
+                    FontSize="12"
+                    FontFamily="{OnPlatform Android=Montserrat-Regular, iOS=Montserrat-Regular}"/>
+
+            </Grid>
+
+
+            <Button 
+                 Margin="0,40,0,40" 
+                 Text="SUBMIT FEEDBACK" 
+                 TextColor="White" 
+                 FontSize="14"
+                 CornerRadius="5" 
+                 FontFamily="{OnPlatform Android=Montserrat-Bold, iOS=Montserrat-Bold}"
+                 BackgroundColor="#CE0F69" 
+                 HorizontalOptions="FillAndExpand" 
+                 VerticalOptions="Start" 
+                 Opacity="1"  
+                 Command="{Binding Submit}"/>
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

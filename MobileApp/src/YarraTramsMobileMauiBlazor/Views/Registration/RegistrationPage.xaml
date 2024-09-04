@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:customhandlers="clr-namespace:YarraTramsMobileMauiBlazor.CustomHandlers"   
+	xmlns:vm="clr-namespace:YarraTramsMobileMauiBlazor.ViewModels.Registration"
+	xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:DataType="vm:RegistrationPageViewModel"
+    Shell.NavBarIsVisible="False"
+    x:Class="YarraTramsMobileMauiBlazor.Views.Registration.RegistrationPage">
+    
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior
+            StatusBarColor="{AppThemeBinding Dark=blue, Light=blue}"
+            StatusBarStyle="LightContent"/>
+    </ContentPage.Behaviors>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label" BasedOn="{StaticResource MontserratMedium}">
+                <Setter Property="TextColor" Value="White" />
+            </Style>
+            <Style TargetType="customhandlers:CustomEntry">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="PlaceholderColor" Value="White" />
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+         <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Image Source="bluebackground.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="Fill" /> 
+              
+            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                 
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1.5*" /><!-- Ding Logo -->
+                    <RowDefinition Height="4.5*" /><!-- Main Registration Area -->
+                    <RowDefinition Height="1*" /><!-- Go Back -->
+                    <RowDefinition Height="1.6*" /><!-- View Terms -->
+                    <RowDefinition Height="1*" /><!-- Bottom Area-->
+
+                </Grid.RowDefinitions>
+
+                <!-- Ding Logo -->
+                <Image x:Name="Logo" Grid.Row="0" WidthRequest="240" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center" Source="LoginDing" Margin="0,27,0,0"/>
+                
+                <!-- Main Registration Area -->
+                <Grid x:Name="PageGrid" Grid.Row="1" Margin="30,30,30,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" /> <!-- 0 Registration text -->
+                        <RowDefinition Height="Auto" /> <!-- 1 Name -->
+                        <RowDefinition Height="Auto" /> <!-- 2 Email -->
+                        <RowDefinition Height="Auto" /> <!-- 3 Phone -->
+                        <RowDefinition Height="Auto" /> <!-- 4 Register Button -->
+                    </Grid.RowDefinitions>
+
+                    <StackLayout Grid.Row="0" Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="330">
+                        <StackLayout>
+                            <Label Margin="0,0,0,10"
+                            HorizontalOptions="Start"
+                            HorizontalTextAlignment="Start"
+                            VerticalOptions="Center"
+                            FontSize="22"
+                            Text="Register">
+                            </Label>
+                        </StackLayout>
+                        <StackLayout>
+                            <Label Margin="0,0,0,5"
+                            HorizontalOptions="Start"
+                            HorizontalTextAlignment="Start"
+                            VerticalOptions="Center"
+                            FontSize="16"
+                            Text="Become part of the Ding! community, subscribe to Tram news channels and receive notifications.">
+                            </Label>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <customhandlers:CustomEntry Grid.Row="1" 
+                                            HeightRequest="42"
+                                            Margin="0,15,0,0" 
+                                            Text="{Binding Name}" 
+                                            Placeholder="Name"
+                                            LeftImage = "usernameuserw"
+                                            LeftImageHeight="20"
+                                            LeftImageWidth="20"
+                                            HorizontalTextAlignment="Start" 
+                                            HorizontalOptions="Center" 
+                                            VerticalOptions="End" 
+                                            BackgroundColor="#0092BC"
+                                            WidthRequest="330"
+                                            Opacity="1">
+                    </customhandlers:CustomEntry>
+                    <customhandlers:CustomEntry Grid.Row="2" 
+                                           Margin="0,15,0,0" 
+                                           HeightRequest="42" 
+                                           Text="{Binding Email}" 
+                                           Placeholder="Email" 
+                                           LeftImage="emailenvelopew"
+                                           LeftImageHeight="20"
+                                           LeftImageWidth="20"                                                
+                                           HorizontalTextAlignment="Start"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="End" 
+                                           BackgroundColor="#0092BC"
+                                           WidthRequest="330"
+                                           Opacity="1"/>
+                    <customhandlers:CustomEntry Grid.Row="3" 
+                                           Margin="0,15,0,0"
+                                           HeightRequest="42" 
+                                           Text="{Binding Phone}" 
+                                           Placeholder="Phone"
+                                           LeftImage="phoneringingw"
+                                           LeftImageHeight="20"
+                                           LeftImageWidth="20"                                                
+                                           HorizontalTextAlignment="Start"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="End" 
+                                           BackgroundColor="#0092BC"
+                                           WidthRequest="330"
+                                           Opacity="1"/>
+                    <Button Grid.Row="4" 
+                            Margin="0,15,0,0" 
+                            Text="REGISTER" 
+                            TextColor="White" 
+                            FontSize="14"
+                            CornerRadius="3" 
+                            FontFamily="{OnPlatform Android=Montserrat-Bold, iOS=Montserrat-Bold}"
+                            BackgroundColor="#004F71" 
+                            WidthRequest="330"
+                            HorizontalOptions="Center" 
+                            VerticalOptions="Start" 
+                            Opacity="1"
+                            Command="{Binding RegisterCommand}">
+
+                    </Button>
+                     
+                </Grid>
+
+                <!-- Go Back -->
+                <Label Grid.Row="2" Margin="0,20,0,0" 
+                    Text="GO BACK"
+                    HorizontalTextAlignment = "Center"
+                    VerticalOptions="Center"
+                    FontSize="16"/>
+
+                <BoxView Grid.Row="2" Margin="0,20,0,0">
+                    <BoxView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoBack}" />
+                    </BoxView.GestureRecognizers>
+                </BoxView>
+
+                <!-- View Terms -->
+                <Label Grid.Row="3" Margin="30,0,30,0"
+                            HorizontalTextAlignment = "Start"
+                            VerticalOptions="EndAndExpand"
+                            FontSize="16">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Ding! is the property of KDR Victoria Pty Ltd. By accessing and using Ding!, you agree to the " />
+                            <Span Text="terms of use." TextDecorations="Underline">
+                            </Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TermsOfUseCommand}"  />
+                    </Label.GestureRecognizers>
+                </Label>
+                
+                <!-- Bottom Area-->
+                <Image Grid.Row="4" Aspect="AspectFill" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Source="KDlogo_login" Margin="30,0,30,0" />
+
+            </Grid>
+         </Grid>
+    </ContentPage.Content>
+</ContentPage>

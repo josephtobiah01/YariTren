@@ -1,0 +1,210 @@
+trigger:
+- master
+
+variables:
+  DotNetVersion: 8.0.100
+  VSVERSION: 17.*
+
+stages:
+- stage: BuildAndroid
+  jobs:
+  - job: BuildDebug
+    displayName: Build YarraTrams App (Debug)
+    pool:
+      vmImage: 'windows-2022'
+      demands:
+      - MSBuild
+    variables:
+      BuildConfiguration: Debug
+    steps:
+    - task: UseDotNet@2
+      displayName: .NET Version
+      inputs:
+        packageType: 'sdk'
+        version: '$(DotNetVersion)'
+    
+    - task: Bash@3
+      displayName: Install MAUI
+      inputs:
+        targetType: 'inline'
+        script: |
+          dotnet nuget locals all --clear 
+          dotnet workload install maui --source https://aka.ms/dotnet6/nuget/index.json --source https://api.nuget.org/v3/index.json
+          dotnet workload install android ios maccatalyst tvos macos maui wasm-tools --source https://aka.ms/dotnet6/nuget/index.json --source https://api.nuget.org/v3/index.json
+    
+    - task: Bash@3
+      displayName: Add DevExpress NuGet Source
+      inputs:
+        targetType: 'inline'
+        script: |
+          dotnet nuget add source https://nuget.devexpress.com/gq79RUOaP6iEOWFFihuOATa3otWdIRU6vk6Wfkxgizb21GrEua/api -n DevExpress
+    
+    - task: Bash@3
+      displayName: Restore nuget
+      inputs:
+        targetType: 'inline'
+        script: |
+          cd "$(Build.SourcesDirectory)/MobileApp/src/YarraTramsMobileMauiBlazor"
+          dotnet restore YarraTramsMobileMauiBlazor.csproj
+    
+    - task: Bash@3
+      displayName: Build Android App (Debug)
+      inputs:
+        targetType: 'inline'
+        script: |
+          cd "$(Build.SourcesDirectory)/MobileApp/src/YarraTramsMobileMauiBlazor"
+          dotnet build YarraTramsMobileMauiBlazor.csproj -f net8.0-android -c $(BuildConfiguration)
+    
+    - task: Bash@3
+      displayName: Rename APK (Debug)
+      inputs:
+        targetType: 'inline'
+        script: |
+          cd "$(Build.SourcesDirectory)/MobileApp/src/YarraTramsMobileMauiBlazor/bin/$(BuildConfiguration)/net8.0-android"
+          for file in *.apk; do mv "$file" "${file%.apk}-debug.apk"; done
+    
+    - task: CopyFiles@2
+      inputs:
+        Contents: |
+          **\MobileApp\src\YarraTramsMobileMauiBlazor\bin\$(BuildConfiguration)\net8.0-android\*-debug.apk
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop_android_debug'
+        publishLocation: 'Container'
+
+  - job: BuildStaging
+    displayName: Build YarraTrams App (Staging)
+    pool:
+      vmImage: 'windows-2022'
+      demands:
+      - MSBuild
+    variables:
+      BuildConfiguration: Staging
+    steps:
+    - task: UseDotNet@2
+      displayName: .NET Version
+      inputs:
+        packageType: 'sdk'
+        version: '$(DotNetVersion)'
+    
+    - task: Bash@3
+      displayName: Install MAUI
+      inputs:
+        targetType: 'inline'
+        script: |
+          dotnet nuget locals all --clear 
+          dotnet workload install maui --source https://aka.ms/dotnet6/nuget/index.json --source https://api.nuget.org/v3/index.json
+          dotnet workload install android ios maccatalyst tvos macos maui wasm-tools --source https://aka.ms/dotnet6/nuget/index.json --source https://api.nuget.org/v3/index.json
+    
+    - task: Bash@3
+      displayName: Add DevExpress NuGet Source
+      inputs:
+        targetType: 'inline'
+        script: |
+          dotnet nuget add source https://nuget.devexpress.com/gq79RUOaP6iEOWFFihuOATa3otWdIRU6vk6Wfkxgizb21GrEua/api -n DevExpress
+    
+    - task: Bash@3
+      displayName: Restore nuget
+      inputs:
+        targetType: 'inline'
+        script: |
+          cd "$(Build.SourcesDirectory)/MobileApp/src/YarraTramsMobileMauiBlazor"
+          dotnet restore YarraTramsMobileMauiBlazor.csproj
+    
+    - task: Bash@3
+      displayName: Build Android App (Staging)
+      inputs:
+        targetType: 'inline'
+        script: |
+          cd "$(Build.SourcesDirectory)/MobileApp/src/YarraTramsMobileMauiBlazor"
+          dotnet build YarraTramsMobileMauiBlazor.csproj -f net8.0-android -c $(BuildConfiguration)
+    
+    - task: Bash@3
+      displayName: Rename APK (Staging)
+      inputs:
+        targetType: 'inline'
+        script: |
+          cd "$(Build.SourcesDirectory)/MobileApp/src/YarraTramsMobileMauiBlazor/bin/$(BuildConfiguration)/net8.0-android"
+          for file in *.apk; do mv "$file" "${file%.apk}-staging.apk"; done
+    
+    - task: CopyFiles@2
+      inputs:
+        Contents: |
+          **\MobileApp\src\YarraTramsMobileMauiBlazor\bin\$(BuildConfiguration)\net8.0-android\*-staging.apk
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop_android_staging'
+        publishLocation: 'Container'
+
+  - job: BuildRelease
+    displayName: Build YarraTrams App (Release)
+    pool:
+      vmImage: 'windows-2022'
+      demands:
+      - MSBuild
+    variables:
+      BuildConfiguration: Release
+    steps:
+    - task: UseDotNet@2
+      displayName: .NET Version
+      inputs:
+        packageType: 'sdk'
+        version: '$(DotNetVersion)'
+    
+    - task: Bash@3
+      displayName: Install MAUI
+      inputs:
+        targetType: 'inline'
+        script: |
+          dotnet nuget locals all --clear 
+          dotnet workload install maui --source https://aka.ms/dotnet6/nuget/index.json --source https://api.nuget.org/v3/index.json
+          dotnet workload install android ios maccatalyst tvos macos maui wasm-tools --source https://aka.ms/dotnet6/nuget/index.json --source https://api.nuget.org/v3/index.json
+    
+    - task: Bash@3
+      displayName: Add DevExpress NuGet Source
+      inputs:
+        targetType: 'inline'
+        script: |
+          dotnet nuget add source https://nuget.devexpress.com/gq79RUOaP6iEOWFFihuOATa3otWdIRU6vk6Wfkxgizb21GrEua/api -n DevExpress
+    
+    - task: Bash@3
+      displayName: Restore nuget
+      inputs:
+        targetType: 'inline'
+        script: |
+          cd "$(Build.SourcesDirectory)/MobileApp/src/YarraTramsMobileMauiBlazor"
+          dotnet restore YarraTramsMobileMauiBlazor.csproj
+    
+    - task: Bash@3
+      displayName: Build Android App (Release)
+      inputs:
+        targetType: 'inline'
+        script: |
+          cd "$(Build.SourcesDirectory)/MobileApp/src/YarraTramsMobileMauiBlazor"
+          dotnet build YarraTramsMobileMauiBlazor.csproj -f net8.0-android -c $(BuildConfiguration)
+    
+    - task: Bash@3
+      displayName: Rename APK (Release)
+      inputs:
+        targetType: 'inline'
+        script: |
+          cd "$(Build.SourcesDirectory)/MobileApp/src/YarraTramsMobileMauiBlazor/bin/$(BuildConfiguration)/net8.0-android"
+          for file in *.apk; do mv "$file" "${file%.apk}-release.apk"; done
+    
+    - task: CopyFiles@2
+      inputs:
+        Contents: |
+          **\MobileApp\src\YarraTramsMobileMauiBlazor\bin\$(BuildConfiguration)\net8.0-android\*-release.apk
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop_android_release'
+        publishLocation: 'Container'

@@ -1,0 +1,68 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Configurations>Debug;Release;Prod;Staging</Configurations>
+  </PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Staging|AnyCPU' ">
+		<DebugType>portable</DebugType>
+		<Optimize>false</Optimize>
+		<OutputPath>bin\Staging</OutputPath>
+		<DefineConstants>STAGING</DefineConstants>
+		<WarningLevel>4</WarningLevel>
+		<IntermediateOutputPath>obj\Staging</IntermediateOutputPath>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Prod|AnyCPU'">
+		<DefineConstants>TRACE;PROD</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>DEBUG;TRACE;DEV</DefineConstants>
+	</PropertyGroup>
+	
+	
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0-preview.4.24266.19" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.61.3" />
+    <PackageReference Include="MonkeyCache" Version="2.1.2-beta" />
+    <PackageReference Include="MonkeyCache.FileStore" Version="2.1.2-beta" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="RestSharp" Version="111.2.0" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+    <PackageReference Include="System.Security.AccessControl" Version="6.0.1" />
+	<PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.0-preview.4.10690" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+    <Compile Remove="Services\DeviceService.cs" />
+    <Compile Remove="Database\ILocalDatabase.cs" />
+    <Compile Remove="Database\ISQLiteFactory.cs" />
+    <Compile Remove="SharePoint\Services\BroadcastClient.cs" />
+    <Compile Remove="SharePoint\Services\ClientBase.cs" />
+    <Compile Remove="SharePoint\Services\MyMenuToolsService.cs" />
+    <Compile Remove="SharePoint\Services\RosterClient.cs" />
+    <Compile Remove="SharePoint\Services\RoutesClient.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="SharePoint\Authentication\CustomStsSamlIntegratedRequestFormat.xml" />
+    <None Remove="SharePoint\Authentication\CustomStsSamlRequestFormat.xml" />
+    <None Remove="SharePoint\Authentication\GetUpdatedDigestInfo.xml" />
+    <None Remove="SharePoint\Authentication\MSOOnlySamlRequest.xml" />
+    <None Remove="SharePoint\Authentication\STSandMSOSamlRequest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SharePoint\Authentication\CustomStsSamlIntegratedRequestFormat.xml" />
+    <EmbeddedResource Include="SharePoint\Authentication\CustomStsSamlRequestFormat.xml" />
+    <EmbeddedResource Include="SharePoint\Authentication\GetUpdatedDigestInfo.xml" />
+    <EmbeddedResource Include="SharePoint\Authentication\MSOOnlySamlRequest.xml" />
+    <EmbeddedResource Include="SharePoint\Authentication\STSandMSOSamlRequest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Database\" />
+  </ItemGroup>
+</Project>

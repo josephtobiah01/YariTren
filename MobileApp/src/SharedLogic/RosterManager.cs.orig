@@ -1,0 +1,40 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security;
+using System.Threading.Tasks;
+using Core;
+using Core.Helpers;
+using Core.Models;
+using Data.SharePoint.Clients;
+
+namespace SharedLogic
+{
+    public static class RosterManager
+    {
+        /// <summary>
+        /// Gets the roster data for the current user
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<List<RosterRecord>> GetRoster()
+        {
+            //TODO: lets turn this into an async method
+<<<<<<< HEAD
+            string key = DatabaseManager.GetKey().Result;
+            var credentials = CredentialManager.GetCredentials().Result;           
+=======
+            string key = await DatabaseManager.GetKey();
+            var credentials = await CredentialManager.GetCredentials(key);
+>>>>>>> Top, bottom and Menu
+            var client = new RosterClient(GetRosterSubSite(), credentials.Username, credentials.Password);
+
+            return client.GetAll().ToList();
+
+        }
+
+        public static string GetRosterSubSite()
+        {
+            return HttpUtility.ConcatUrls(Consts.SiteUrl, Consts.RosterSubsite);
+        }
+    }
+}

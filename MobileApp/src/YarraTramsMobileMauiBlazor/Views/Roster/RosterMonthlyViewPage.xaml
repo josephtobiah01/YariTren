@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:YarraTramsMobileMauiBlazor.ViewModels.Roster"
+             x:Class="YarraTramsMobileMauiBlazor.Views.Roster.RosterMonthlyViewPage">
+    
+    <VerticalStackLayout>
+        <StackLayout >
+
+            <Grid x:Name="calendar" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+
+                <Grid Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="7*" />
+                        <ColumnDefinition Width="3*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Image Grid.Column="0" x:Name="leftArrow" HorizontalOptions="Start" HeightRequest="50" WidthRequest="80" Aspect="AspectFit" >
+                        <Image.Triggers>
+                            <DataTrigger TargetType="Image" Binding="{Binding IsMonthLeftArrow}" Value="True">
+                                <Setter Property="Source" Value="arrowinactiveleft" />
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Image" Binding="{Binding IsMonthLeftArrow}" Value="False">
+                                <Setter Property="Source" Value="arrowactiveleft" />
+                                <Setter Property="IsEnabled" Value="True" />
+                            </DataTrigger>
+                        </Image.Triggers>
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Handle_Tapped_Left" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Label Grid.Column="1" x:Name="monthName" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" FontSize="20" TextColor="Black" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+
+                    <Image Grid.Column="2" x:Name="rightArrow" HorizontalOptions="EndAndExpand" HeightRequest="50" WidthRequest="80" Aspect="AspectFit">
+                        <Image.Triggers>
+                            <DataTrigger TargetType="Image" Binding="{Binding IsMonthRightArrow}" Value="True">
+                                <Setter Property="Source" Value="arrowinactiveright" />
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Image" Binding="{Binding IsMonthRightArrow}" Value="False">
+                                <Setter Property="Source" Value="arrowactiveright" />
+                                <Setter Property="IsEnabled" Value="True" />
+                            </DataTrigger>
+                        </Image.Triggers>
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Handle_Tapped_Right" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Grid>
+
+
+                <Grid Margin="17, 20, 17, 0"
+                    Grid.Row="1" 
+                    RowSpacing="4"
+                    ColumnSpacing="4"
+                    HorizontalOptions="FillAndExpand">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".14*" />
+                        <ColumnDefinition Width=".14*" />
+                        <ColumnDefinition Width=".14*" />
+                        <ColumnDefinition Width=".14*" />
+                        <ColumnDefinition Width=".14*" />
+                        <ColumnDefinition Width=".14*" />
+                        <ColumnDefinition Width=".14*" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <Label Grid.Column="0" Grid.Row="0" Text="Su" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="14" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+                    <Label Grid.Column="1" Grid.Row="0" Text="Mo" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="14" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+                    <Label Grid.Column="2" Grid.Row="0" Text="Tu" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="14" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+                    <Label Grid.Column="3" Grid.Row="0" Text="We" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="14" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <Label Grid.Column="4" Grid.Row="0" Text="Th" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="14" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+                    <Label Grid.Column="5" Grid.Row="0" Text="Fr" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="14" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <Label Grid.Column="6" Grid.Row="0" Text="Sa" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="14" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+
+                </Grid>
+
+                <Grid 
+                    x:Name="monthView" 
+                    Margin="17, 10, 17, 10"
+                    Grid.Row="2" 
+                    RowSpacing="20"
+                    ColumnSpacing="7"
+                    HorizontalOptions="FillAndExpand">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height=".166*" />
+                        <RowDefinition Height=".166*" />
+                        <RowDefinition Height=".166*" />
+                        <RowDefinition Height=".166*" />
+                        <RowDefinition Height=".166*" />
+                        <RowDefinition Height=".166*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".14*" />
+                        <ColumnDefinition Width=".14*" />
+                        <ColumnDefinition Width=".14*" />
+                        <ColumnDefinition Width=".14*" />
+                        <ColumnDefinition Width=".14*" />
+                        <ColumnDefinition Width=".14*" />
+                        <ColumnDefinition Width=".14*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Frame Grid.Column="0" Grid.Row="0" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"
+                           Margin="0,15"/>
+                    <Label x:Name="Cell0" Grid.Column="0" Grid.Row="0" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+                    <BoxView Grid.Column="0" Grid.Row="0" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell0}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+                    <Frame Grid.Column="1" Grid.Row="0" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell1" Grid.Column="1" Grid.Row="0" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="1" Grid.Row="0" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell1}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="2" Grid.Row="0" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell2" Grid.Column="2" Grid.Row="0" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="2" Grid.Row="0" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell2}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="3" Grid.Row="0" BackgroundColor="Transparent" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell3" Grid.Column="3" Grid.Row="0" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+                    <BoxView Grid.Column="3" Grid.Row="0" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell3}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="4" Grid.Row="0" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell4" Grid.Column="4" Grid.Row="0" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="4" Grid.Row="0" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell4}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="5" Grid.Row="0" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell5" Grid.Column="5" Grid.Row="0" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="5" Grid.Row="0" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell5}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="6" Grid.Row="0" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell6" Grid.Column="6" Grid.Row="0" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+
+                    <BoxView Grid.Column="6" Grid.Row="0" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell6}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+                    <Frame Grid.Column="0" Grid.Row="1" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell7" Grid.Column="0" Grid.Row="1" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+                    <BoxView Grid.Column="0" Grid.Row="1" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell7}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="1" Grid.Row="1" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell8" Grid.Column="1" Grid.Row="1" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="1" Grid.Row="1" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell8}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="2" Grid.Row="1" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell9" Grid.Column="2" Grid.Row="1" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+                    <BoxView Grid.Column="2" Grid.Row="1" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell9}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="3" Grid.Row="1" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell10" Grid.Column="3" Grid.Row="1" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="3" Grid.Row="1" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell10}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="4" Grid.Row="1" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell11" Grid.Column="4" Grid.Row="1" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="4" Grid.Row="1" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell11}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="5" Grid.Row="1" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell12" Grid.Column="5" Grid.Row="1" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="5" Grid.Row="1" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell12}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="6" Grid.Row="1" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell13" Grid.Column="6" Grid.Row="1" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="6" Grid.Row="1" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell13}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="0" Grid.Row="2" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell14" Grid.Column="0" Grid.Row="2" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="0" Grid.Row="2" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell14}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="1" Grid.Row="2" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell15" Grid.Column="1" Grid.Row="2" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="1" Grid.Row="2" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell15}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="2" Grid.Row="2" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell16" Grid.Column="2" Grid.Row="2" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+                    <BoxView Grid.Column="2" Grid.Row="2" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell16}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="3" Grid.Row="2" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell17" Grid.Column="3" Grid.Row="2" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="3" Grid.Row="2" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell17}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="4" Grid.Row="2" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell18" Grid.Column="4" Grid.Row="2" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="4" Grid.Row="2" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell18}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="5" Grid.Row="2" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell19" Grid.Column="5" Grid.Row="2" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+                    <BoxView Grid.Column="5" Grid.Row="2" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell19}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="6" Grid.Row="2" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell20" Grid.Column="6" Grid.Row="2" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="6" Grid.Row="2" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell20}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="0" Grid.Row="3" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell21" Grid.Column="0" Grid.Row="3" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+                    <BoxView Grid.Column="0" Grid.Row="3" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell21}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="1" Grid.Row="3" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell22" Grid.Column="1" Grid.Row="3" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="1" Grid.Row="3" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell22}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="2" Grid.Row="3" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell23" Grid.Column="2" Grid.Row="3" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="2" Grid.Row="3" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell23}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="3" Grid.Row="3" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell24" Grid.Column="3" Grid.Row="3" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="3" Grid.Row="3" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell24}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="4" Grid.Row="3" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell25" Grid.Column="4" Grid.Row="3" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="4" Grid.Row="3" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell25}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="5" Grid.Row="3" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell26" Grid.Column="5" Grid.Row="3" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="5" Grid.Row="3" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell26}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="6" Grid.Row="3" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell27" Grid.Column="6" Grid.Row="3" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="6" Grid.Row="3" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell27}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="0" Grid.Row="4" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell28" Grid.Column="0" Grid.Row="4" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="0" Grid.Row="4" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell28}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="1" Grid.Row="4" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell29" Grid.Column="1" Grid.Row="4" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="1" Grid.Row="4" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell29}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="2" Grid.Row="4" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell30" Grid.Column="2" Grid.Row="4" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="2" Grid.Row="4" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell30}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="3" Grid.Row="4" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell31" Grid.Column="3" Grid.Row="4" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="3" Grid.Row="4" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell31}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="4" Grid.Row="4" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell32" Grid.Column="4" Grid.Row="4" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="4" Grid.Row="4" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell32}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="5" Grid.Row="4" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell33" Grid.Column="5" Grid.Row="4" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+                    <BoxView Grid.Column="5" Grid.Row="4" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell33}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="6" Grid.Row="4" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell34" Grid.Column="6" Grid.Row="4" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="6" Grid.Row="4" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell34}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="0" Grid.Row="5" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell35" Grid.Column="0" Grid.Row="5" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="0" Grid.Row="5" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell35}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="1" Grid.Row="5" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell36" Grid.Column="1" Grid.Row="5" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+                    <BoxView Grid.Column="1" Grid.Row="5" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell36}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="2" Grid.Row="5" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell37" Grid.Column="2" Grid.Row="5" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+                    <BoxView Grid.Column="2" Grid.Row="5" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell37}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="3" Grid.Row="5" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell38" Grid.Column="3" Grid.Row="5" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="3" Grid.Row="5" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell38}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="4" Grid.Row="5" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell39" Grid.Column="4" Grid.Row="5" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+                    <BoxView Grid.Column="4" Grid.Row="5" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell39}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="5" Grid.Row="5" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell40" Grid.Column="5" Grid.Row="5" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}" />
+                    <BoxView Grid.Column="5" Grid.Row="5" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell40}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+
+                    <Frame Grid.Column="6" Grid.Row="5" BackgroundColor="White" BorderColor="#EDEDED" CornerRadius="0" HasShadow="False" HeightRequest="25"/>
+                    <Label x:Name="Cell41" Grid.Column="6" Grid.Row="5" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="24" TextColor="#E8E8E8" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{OnPlatform Android=Montserrat-Medium, iOS=Montserrat-Medium}"/>
+                    <BoxView Grid.Column="6" Grid.Row="5" HeightRequest="25">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DateClicked}" CommandParameter="{x:Reference Cell41}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+
+                </Grid>
+
+            </Grid>
+
+        </StackLayout>
+    </VerticalStackLayout>
+</ContentView>

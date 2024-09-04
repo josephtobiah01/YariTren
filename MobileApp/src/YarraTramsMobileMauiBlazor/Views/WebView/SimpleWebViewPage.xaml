@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:YarraTramsMobileMauiBlazor.ViewModels.WebView"
+    x:DataType="vm:SimpleWebViewPageViewModel"
+    x:Class="YarraTramsMobileMauiBlazor.Views.WebView.SimpleWebViewPage"
+    Loaded="ContentPage_Loaded"
+    BackgroundColor="{AppThemeBinding Dark=white, Light=white}"
+    Shell.FlyoutBehavior="Flyout">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior
+            x:Name="WebViewPageStatusBarColor"
+            StatusBarColor="{AppThemeBinding Dark=Gray, Light=Gray}"
+            StatusBarStyle="LightContent"
+            ApplyOn="OnPageNavigatedTo"/>
+    </ContentPage.Behaviors>
+
+    <Shell.TitleView>
+        <Grid
+         Margin="0"
+         BackgroundColor="Gray"
+         HeightRequest="75"
+         Padding="15,35">
+
+            <Image
+             Grid.Column="1"
+             Source="kdyttopbarlogo"
+             Margin="0"
+             HeightRequest="35"
+             HorizontalOptions="Center"
+             VerticalOptions="Center"
+             Aspect="AspectFit"
+             BackgroundColor="Gray"/>
+        </Grid>
+    </Shell.TitleView>
+
+    <ContentPage.Content>
+        <WebView x:Name="webView"
+                     Source="{Binding ExternalUrl}"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"/>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "184623633718",
+    "project_id": "yarratramsmobile",
+    "storage_bucket": "yarratramsmobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184623633718:android:b6530302b674ae2962cf97",
+        "android_client_info": {
+          "package_name": "au.com.yarratrams.employeeapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5KOzBSbkCD2WEPnmKcnWrGwzt4K8ip7U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

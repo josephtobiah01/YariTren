@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dx:DXPopup 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dx="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
+    xmlns:vm="clr-namespace:YarraTramsMobileMauiBlazor.ViewModels.Roster"
+    x:DataType="vm:RosterSimplePopupViewModel"
+    x:Class="YarraTramsMobileMauiBlazor.Views.Roster.RosterSimplePopup"
+    AllowAnimation="True"
+    AnimationDuration="250"
+    CloseOnScrimTap="True"
+    IsOpen="{Binding IsPopupOpen}">
+    
+    
+    <Frame 
+        VerticalOptions="Center" 
+        HorizontalOptions="Center" 
+        Margin="20, 20, 20, 20"
+        WidthRequest="250"
+        HeightRequest="90"
+        BackgroundColor="#CF4520" 
+        CornerRadius="10">
+
+        <Frame.GestureRecognizers>
+            <SwipeGestureRecognizer Direction="Left" Swiped="{Binding Swiped}"/>
+            <SwipeGestureRecognizer Direction="Right" Swiped="{Binding Swiped}"/>
+        </Frame.GestureRecognizers>
+
+        <StackLayout 
+            HorizontalOptions="FillAndExpand" 
+            VerticalOptions="FillAndExpand"
+            Orientation="Vertical">
+
+            <Label 
+                x:Name="PopupTitle" 
+                HorizontalOptions="CenterAndExpand" 
+                VerticalOptions="Start" 
+                FontSize="16" 
+                TextColor="White" 
+                HorizontalTextAlignment="Center" 
+                Style="{StaticResource MontserratMedium}" 
+                Margin="0,0,0,15"/>
+
+            <Label 
+                x:Name="message" 
+                TextColor="White"
+                FontSize="14" 
+                HorizontalOptions="Center"
+                VerticalOptions="Start" 
+                VerticalTextAlignment="Center" 
+                HorizontalTextAlignment="Center" 
+                Style="{StaticResource MontserratMedium}"/>
+            
+        </StackLayout>
+    </Frame>
+</dx:DXPopup>
